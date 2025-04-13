@@ -35,3 +35,32 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
+
+
+Estrutura inicial do projeto
+src/
+├── app/
+│   ├── core/                # Serviços e funcionalidades centrais
+│   │   ├── services/        # Serviços globais (ex.: autenticação, API)
+│   │   ├── guards/          # Guards para rotas (ex.: AuthGuard)
+│   │   ├── interceptors/    # Interceptadores HTTP (ex.: token JWT)
+│   │   └── core.module.ts   # Módulo central (se necessário)
+│   ├── shared/              # Componentes, diretivas e pipes reutilizáveis
+│   │   ├── components/      # Componentes compartilhados (ex.: navbar, footer)
+│   │   ├── directives/      # Diretivas personalizadas
+│   │   ├── pipes/           # Pipes reutilizáveis
+│   │   └── shared.module.ts # Módulo compartilhado
+│   ├── features/            # Funcionalidades principais do sistema
+│   │   ├── auth/            # Módulo de autenticação (login, registro)
+│   │   ├── sales/           # Módulo de vendas
+│   │   ├── clients/         # Módulo de clientes
+│   │   ├── inventory/       # Módulo de estoque
+│   │   └── dashboard/       # Módulo do painel principal
+│   ├── app.routes.ts        # Configuração de rotas principais
+│   ├── app.component.ts     # Componente raiz
+│   └── app.component.html   # Template do componente raiz
+├── assets/                  # Arquivos estáticos (imagens, ícones, etc.)
+├── environments/            # Configurações de ambiente (dev, prod)
+└── styles/                  # Estilos globais (CSS/SCSS)

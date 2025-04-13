@@ -1,0 +1,23 @@
+<div class="sales-list">
+  <h1>Lista de Vendas</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Total</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody>
+        @for (sale of sales; track $index) {
+            <tr>
+                <td>{{ sale.id }}</td>
+                <td>{{ sale.client }}</td>
+                <td>{{ sale.total | currency:'BRL' }}</td>
+                <td>{{ sale.date }}</td>
+            </tr>
+        }
+    </tbody>
+  </table>
+</div>
