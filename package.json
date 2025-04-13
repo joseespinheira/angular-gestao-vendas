@@ -18,6 +18,8 @@
     "@angular/platform-browser-dynamic": "^19.2.6",
     "@angular/router": "^19.2.6",
     "@angular/service-worker": "^19.2.6",
+    "@types/node": "^22.14.1",
+    "angular-server-side-configuration": "^19.0.1",
     "bootstrap": "^5.3.5",
     "dotenv": "^16.5.0",
     "firebase": "^11.6.0",
@@ -26,11 +28,12 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^19.0.1",
     "@angular-devkit/build-angular": "^19.2.7",
     "@angular/cli": "~19.2.7",
     "@angular/compiler-cli": "^19.2.6",
     "@types/jasmine": "~4.3.0",
-    "@types/node": "^22.14.1",
+    "dotenv-webpack": "^8.1.0",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",

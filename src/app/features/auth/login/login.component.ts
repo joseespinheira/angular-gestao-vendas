@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -32,9 +33,10 @@ export class LoginComponent {
   texto() {
     console.log('Texto do login component');
     var texto = 'Texto do login component';
-    const a = (window as any).__env?.FIREBASE_MESSAGING_SENDER_ID || ''
+    const a = environment.firebase.messagingSenderId ||  process.env['FIREBASE_MESSAGING_SENDER_ID']
     if (a) {
-      return a;
+      console.log('FIREBASE_MESSAGING_SENDER_ID:', a);
+      return process.env['FIREBASE_MESSAGING_SENDER_ID'];
     }
     return texto;
   }
