@@ -33,10 +33,9 @@ export class LoginComponent {
   texto() {
     console.log('Texto do login component');
     var texto = 'Texto do login component';
-    const a = environment.firebase.messagingSenderId ||  process.env['FIREBASE_MESSAGING_SENDER_ID']
+    const a = environment.firebase.messagingSenderId 
     if (a) {
-      console.log('FIREBASE_MESSAGING_SENDER_ID:', a);
-      return process.env['FIREBASE_MESSAGING_SENDER_ID'];
+      return a;
     }
     return texto;
   }

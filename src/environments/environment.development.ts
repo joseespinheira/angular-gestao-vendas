@@ -9,4 +9,4 @@ export const environment = {
       measurementId: (window as any).__env?.FIREBASE_MEASUREMENT_ID || '',
     },
     production: false,
-  };;
+  };
