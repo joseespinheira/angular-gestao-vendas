@@ -3,7 +3,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node -r dotenv/config inject-env.js && ng serve",
-    "build": "ng build",
+    "build": "node -r dotenv/config inject-env.js; ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
