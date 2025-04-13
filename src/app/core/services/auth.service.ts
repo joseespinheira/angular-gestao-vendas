@@ -1,13 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Auth, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   // private afAuth = inject (AngularFireAuth);
-  // private auth = inject(Auth);
+  private auth = inject(Auth);
   constructor() {}
 
   /**
@@ -15,9 +14,9 @@ export class AuthService {
    * @param email Email ou CPF do usuário.
    * @param password Senha do usuário.
    */
-  login(email: string, password: string):Promise<void> {
-    return new Promise((resolve, reject) => {resolve(); reject();});
-    // return this.afAuth.signInWithEmailAndPassword(email, password);
+  login(email: string, password: string):Promise<any> {
+    // return new Promise((resolve, reject) => {resolve(true); reject();});
+    return signInWithEmailAndPassword(this.auth, email, password);
   }
 
   /**
@@ -42,7 +41,7 @@ export class AuthService {
    * Faz o logout do usuário.
    */
   logout() {
-    // return this.afAuth.signOut();
+    return signOut(this.auth);
   }
 
   /**
@@ -50,6 +49,6 @@ export class AuthService {
    * Retorna null se não houver usuário autenticado.
    */
   getCurrentUser() {
-    // return this.auth.currentUser;
+    return this.auth.currentUser;
   }
 }

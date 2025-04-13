@@ -13,7 +13,7 @@ export class RegisterComponent {
   email = '';
   password = '';
 
-  private authService = inject(AuthService);
+  // private authService = inject(AuthService);
   private router = inject(Router);
 
   constructor() {}

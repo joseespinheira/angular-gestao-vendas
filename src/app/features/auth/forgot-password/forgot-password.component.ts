@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/core/services/auth.service';
+// import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -12,15 +12,17 @@ import { FormsModule } from '@angular/forms';
 export class ForgotPasswordComponent {
   email = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    // private authService: AuthService, 
+    private router: Router) {}
 
   recoverPassword() {
-    this.authService.recoverPassword(this.email)
-      .then(() => {
-        console.log('Password recovery email sent');
-        this.router.navigate(['/login']);
-      })
-      .catch(err => console.error('Password recovery failed', err));
+    // this.authService.recoverPassword(this.email)
+    //   .then(() => {
+    //     console.log('Password recovery email sent');
+    //     this.router.navigate(['/login']);
+    //   })
+    //   .catch(err => console.error('Password recovery failed', err));
   }
 
   navigateToLogin() {

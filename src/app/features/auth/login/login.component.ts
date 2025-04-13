@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -14,7 +14,8 @@ export class LoginComponent {
   email = '';
   password = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  private authService = inject(AuthService);
+  constructor(private router: Router) {}
 
   login() {
     this.authService.login(this.email, this.password)
@@ -31,12 +32,7 @@ export class LoginComponent {
   }
 
   texto() {
-    console.log('Texto do login component');
-    var texto = 'Texto do login component';
-    const a = environment.firebase.messagingSenderId 
-    if (a) {
-      return a;
-    }
+    let texto = 'texto()';
     return texto;
   }
 }
