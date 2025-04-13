@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Ajuste o nome do diretório do projeto gerado pelo Angular
-const indexPath = path.join(__dirname, 'output', 'index.html');
+const indexPath = path.join('output', 'index.html');
 
 if (!fs.existsSync(indexPath)) {
   console.error(`Erro: O arquivo ${indexPath} não foi encontrado.`);
