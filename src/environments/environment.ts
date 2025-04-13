@@ -4,7 +4,7 @@ export const environment = {
     authDomain: (window as any).__env?.FIREBASE_AUTH_DOMAIN || '',
     projectId: (window as any).__env?.FIREBASE_PROJECT_ID || '',
     storageBucket: (window as any).__env?.FIREBASE_STORAGE_BUCKET || '',
-    messagingSenderId: process.env['FIREBASE_MESSAGING_SENDER_ID'] || '',
+    messagingSenderId: (window as any).__env?.FIREBASE_MESSAGING_SENDER_ID || '',
     appId: (window as any).__env?.FIREBASE_APP_ID || '',
     measurementId: (window as any).__env?.FIREBASE_MEASUREMENT_ID || '',
   },
