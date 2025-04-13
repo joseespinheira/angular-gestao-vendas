@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   imports: [FormsModule],
@@ -21,5 +19,23 @@ export class LoginComponent {
     this.authService.login(this.email, this.password)
       .then(() => this.router.navigate(['/sales']))
       .catch(err => console.error('Login failed', err));
+  }
+
+  navigateToRegister() {
+    this.router.navigate(['/login/register']);
+  }
+
+  navigateToForgotPassword() {
+    this.router.navigate(['/login/forgot-password']);
+  }
+
+  texto() {
+    console.log('Texto do login component');
+    var texto = 'Texto do login component';
+    const a = (window as any).__env?.FIREBASE_MESSAGING_SENDER_ID || ''
+    if (a) {
+      return a;
+    }
+    return texto;
   }
 }

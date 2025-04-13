@@ -1,12 +1,12 @@
 export const environment = {
   firebase: {
-    apiKey: "SUA_API_KEY",
-    authDomain: "SEU_AUTH_DOMAIN",
-    projectId: "SEU_PROJECT_ID",
-    storageBucket: "SEU_STORAGE_BUCKET",
-    messagingSenderId: "SEU_MESSAGING_SENDER_ID",
-    appId: "SEU_APP_ID",
-    measurementId: "SEU_MEASUREMENT_ID"
+    apiKey: (window as any).__env?.FIREBASE_API_KEY || '',
+    authDomain: (window as any).__env?.FIREBASE_AUTH_DOMAIN || '',
+    projectId: (window as any).__env?.FIREBASE_PROJECT_ID || '',
+    storageBucket: (window as any).__env?.FIREBASE_STORAGE_BUCKET || '',
+    messagingSenderId: (window as any).__env?.FIREBASE_MESSAGING_SENDER_ID || '',
+    appId: (window as any).__env?.FIREBASE_APP_ID || '',
+    measurementId: (window as any).__env?.FIREBASE_MEASUREMENT_ID || '',
   },
-  production: false
+  production: false,
 };

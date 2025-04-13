@@ -1,3 +1,4 @@
+// filepath: c:\xampp\htdocs\angular-gestao-vendas\src\main.ts
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { provideRouter } from '@angular/router';
@@ -12,6 +13,6 @@ bootstrapApplication(AppComponent, {
     provideRouter(appRoutes),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore())
-  ]
+    provideFirestore(() => getFirestore()),
+  ],
 }).catch(err => console.error(err));
