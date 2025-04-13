@@ -1,6 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
+// Ajuste o nome do diretório do projeto gerado pelo Angular
+const projectName = 'angular-test'; // Substitua pelo nome correto do seu projeto
+const indexPath = path.join(__dirname, 'dist', projectName, 'index.html');
+
+if (!fs.existsSync(indexPath)) {
+  console.error(`Erro: O arquivo ${indexPath} não foi encontrado.`);
+  process.exit(1);
+}
+
 const env = {
   FIREBASE_API_KEY: process.env.FIREBASE_API_KEY || '',
   FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN || '',
@@ -11,7 +20,6 @@ const env = {
   FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID || '',
 };
 
-const indexPath = path.join(__dirname, 'dist', 'index.html');
 let indexContent = fs.readFileSync(indexPath, 'utf8');
 
 Object.keys(env).forEach(key => {
@@ -20,4 +28,4 @@ Object.keys(env).forEach(key => {
 });
 
 fs.writeFileSync(indexPath, indexContent, 'utf8');
-console.log('Environment variables injected into index.html');
+console.log('Variáveis de ambiente injetadas no index.html');
