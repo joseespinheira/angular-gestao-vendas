@@ -18,10 +18,6 @@ const envFile = `export const environment = {
 };
 `;
 let caminho = "./src/environments/environment.ts";
-console.log("production", process.env.PRODUCTION);
-if (dotenv.PRODUCTION === "false") {
-  caminho = "./src/environments/environment.development.ts";
-}
 const targetPath = path.join(__dirname, caminho);
 fs.writeFile(targetPath, envFile, (err) => {
   if (err) {
