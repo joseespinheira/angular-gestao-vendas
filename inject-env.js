@@ -17,7 +17,12 @@ const envFile = `export const environment = {
     production: ${process.env.PRODUCTION}
 };
 `;
-const targetPath = path.join(__dirname, './src/environments/environment.ts');
+let caminho = './src/environments/environment.ts';
+console.log('production', process.env.PRODUCTION);
+if(dotenv.PRODUCTION === 'false'){
+    caminho = './src/environments/environment.development.ts';
+}
+const targetPath = path.join(__dirname, caminho);
 fs.writeFile(targetPath, envFile, (err) => {
     if (err) {
         console.error(err);
