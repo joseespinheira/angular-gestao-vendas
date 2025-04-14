@@ -1,5 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +19,7 @@ export class AuthService {
    * @param email Email ou CPF do usuário.
    * @param password Senha do usuário.
    */
-  login(email: string, password: string):Promise<any> {
+  login(email: string, password: string): Promise<any> {
     // return new Promise((resolve, reject) => {resolve(true); reject();});
     return signInWithEmailAndPassword(this.auth, email, password);
   }
@@ -25,15 +30,18 @@ export class AuthService {
    * @param password Senha do usuário.
    */
   register(email: string, password: string) {
-    // return this.afAuth.createUserWithEmailAndPassword(email, password);
+    return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
   /**
    * Envia um email para recuperação de senha.
    * @param email Email do usuário.
    */
-  recoverPassword(email: string):Promise<void> {
-    return new Promise((resolve, reject) => {resolve(); reject();});
+  recoverPassword(email: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      resolve();
+      reject();
+    });
     // return this.afAuth.sendPasswordResetEmail(email);
   }
 

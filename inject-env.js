@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const successColor = '\x1b[32m%s\x1b[0m';
-const checkSign = '\u{2705}';
-const dotenv = require('dotenv').config({path: 'src/.env'}); ;
+const fs = require("fs");
+const path = require("path");
+const successColor = "\x1b[32m%s\x1b[0m";
+const checkSign = "\u{2705}";
+const dotenv = require("dotenv").config({ path: "src/.env" });
 
 const envFile = `export const environment = {
     firebase: {
@@ -17,17 +17,20 @@ const envFile = `export const environment = {
     production: ${process.env.PRODUCTION}
 };
 `;
-let caminho = './src/environments/environment.ts';
-console.log('production', process.env.PRODUCTION);
-if(dotenv.PRODUCTION === 'false'){
-    caminho = './src/environments/environment.development.ts';
+let caminho = "./src/environments/environment.ts";
+console.log("production", process.env.PRODUCTION);
+if (dotenv.PRODUCTION === "false") {
+  caminho = "./src/environments/environment.development.ts";
 }
 const targetPath = path.join(__dirname, caminho);
 fs.writeFile(targetPath, envFile, (err) => {
-    if (err) {
-        console.error(err);
-        throw err;
-    } else {
-        console.log(successColor, `${checkSign} Successfully generated environment.ts`);
-    }
+  if (err) {
+    console.error(err);
+    throw err;
+  } else {
+    console.log(
+      successColor,
+      `${checkSign} Successfully generated environment.ts`
+    );
+  }
 });
