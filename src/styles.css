@@ -1,4 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.sidenav-container {
+  height: 100vh; /* Garante que o contêiner ocupe toda a altura da tela */
+}
+
+.sidenav {
+  width: 250px; /* Define a largura do menu lateral */
+}
+
+.content {
+  padding: 16px; /* Adiciona espaçamento ao conteúdo principal */
+}

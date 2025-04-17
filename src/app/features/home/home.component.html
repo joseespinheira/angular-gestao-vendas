@@ -1,0 +1,51 @@
+<div class="container mt-4">
+  <div class="row g-3">
+    <!-- Botão Vendas -->
+    <div class="col-6">
+      <button
+        type="button"
+        class="btn btn-primary w-100 py-4 d-flex flex-column align-items-center rounded"
+        (click)="navigateTo('sales')"
+      >
+        <i class="bi bi-cart-fill fs-1"></i>
+        <span class="mt-2">Vendas</span>
+      </button>
+    </div>
+
+    <!-- Botão Clientes -->
+    <div class="col-6">
+      <button
+        type="button"
+        class="btn btn-success w-100 py-4 d-flex flex-column align-items-center rounded"
+        (click)="navigateTo('customers')"
+      >
+        <i class="bi bi-people-fill fs-1"></i>
+        <span class="mt-2">Clientes</span>
+      </button>
+    </div>
+
+    <!-- Botão Produtos -->
+    <div class="col-6">
+      <button
+        type="button"
+        class="btn btn-warning w-100 py-4 d-flex flex-column align-items-center rounded"
+        (click)="navigateTo('products')"
+      >
+        <i class="bi bi-box-seam fs-1"></i>
+        <span class="mt-2">Produtos</span>
+      </button>
+    </div>
+
+    <!-- Botão Logoff -->
+    <div class="col-6">
+      <button
+        type="button"
+        class="btn btn-danger w-100 py-4 d-flex flex-column align-items-center rounded"
+        (click)="logoff()"
+      >
+        <i class="bi bi-box-arrow-right fs-1"></i>
+        <span class="mt-2">Sair</span>
+      </button>
+    </div>
+  </div>
+</div>

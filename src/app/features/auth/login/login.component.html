@@ -2,17 +2,34 @@
   <h1>Login</h1>
   <form (ngSubmit)="login()">
     <div class="form-group">
-      <label for="email">Email</label>
-      <input id="email" type="email" [(ngModel)]="email" name="email" class="form-control" required autocomplete="username" />
+      <label for="email" class="float-start">Email</label>
+      <input
+        id="email"
+        type="email"
+        [(ngModel)]="email"
+        name="email"
+        class="form-control"
+        required
+        autocomplete="username"
+      />
     </div>
     <div class="form-group">
-      <label for="password">Password</label>
-      <input id="password" type="password" [(ngModel)]="password" name="password" class="form-control" required autocomplete="current-password"/>
+      <label for="password" class="float-start">Senha</label>
+      <input
+        id="password"
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        class="form-control"
+        required
+        autocomplete="current-password"
+      />
     </div>
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn btn-primary">Entrar</button>
   </form>
-  <button (click)="navigateToRegister()">Criar nova conta</button>
-  <button (click)="navigateToForgotPassword()">Esqueci minha senha</button>
-  <label>{{texto()}}</label>
-  <button googleSso>Sign in with google</button>
+  <div class="d-flex justify-content-between mt-3 align-items-center">
+    <a href="#" (click)="navigateToForgotPassword()">Esqueci minha senha</a>
+    <button (click)="navigateToRegister()">Nova conta</button>
+    <!-- <button googleSso>Sign in with google</button> -->
+  </div>
 </div>

@@ -1,27 +1,27 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Gestão de Vendas</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/sales">Vendas</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/clients">Clientes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/inventory">Estoque</a>
-        </li>
-      </ul>
+<mat-sidenav-container class="sidenav-container">
+  <!-- Menu Lateral -->
+  <mat-sidenav #sidenav mode="side" class="sidenav" [opened]="false">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/sales" (click)="sidenav.close()">Vendas</a>
+      <a mat-list-item routerLink="/clients" (click)="sidenav.close()"
+        >Clientes</a
+      >
+      <a mat-list-item routerLink="/inventory" (click)="sidenav.close()"
+        >Estoque</a
+      >
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Conteúdo Principal -->
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Gestão de Vendas</span>
+    </mat-toolbar>
+    <div class="content">
+      <ng-content></ng-content>
     </div>
-  </nav>
+  </mat-sidenav-content>
+</mat-sidenav-container>

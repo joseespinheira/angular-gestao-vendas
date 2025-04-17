@@ -6,15 +6,14 @@ import {
   MatDialogClose,
   MatDialogContent,
   MatDialogRef,
-  MatDialogTitle,
 } from '@angular/material/dialog';
+import { ErrorTypeEnum } from '@core/enums/error-type.enum';
 
 @Component({
   selector: 'app-error-dialog',
   templateUrl: './error-dialog.component.html',
   styles: [],
   imports: [
-    MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
@@ -24,7 +23,8 @@ import {
 export class ErrorDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ErrorDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { message: string }
+    @Inject(MAT_DIALOG_DATA)
+    public data: { message: string; type: ErrorTypeEnum }
   ) {}
 
   close(): void {

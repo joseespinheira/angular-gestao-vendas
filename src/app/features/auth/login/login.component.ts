@@ -2,8 +2,10 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { ErrorDialogComponent } from '../../../shared/components/error-dialog/error-dialog.component';
+import { AuthService } from '@core/services/auth.service';
+import { ErrorDialogComponent } from '@shared/components/error-dialog/error-dialog.component';
+import { getFriendlyFirebaseErrorMessage } from '@shared/utils/firebase-error-messages';
+import { ErrorTypeEnum } from '../../../core/enums/error-type.enum';
 
 @Component({
   selector: 'app-login',
@@ -23,16 +25,27 @@ export class LoginComponent {
   login() {
     this.authService
       .login(this.email, this.password)
-      .then(() => this.router.navigate(['/sales']))
+      .then(() => {
+        // salvar os dados do usuario na tabela DadosUsuario do firebase
+        this.authService
+          .getUserData()
+          .then((data) => {
+            localStorage.setItem('user', JSON.stringify(data));
+          })
+          .catch((error) => {
+            throw error;
+          });
+        this.router.navigate(['/home']);
+      })
       .catch((err) => {
-        console.error('Login failed', err);
-        this.showErrorDialog(err.message); // Exibe o modal com a mensagem de erro
+        const friendlyMessage = getFriendlyFirebaseErrorMessage(err.message);
+        this.showErrorDialog(friendlyMessage);
       });
   }
 
   showErrorDialog(message: string): void {
     this.dialog.open(ErrorDialogComponent, {
-      data: { message },
+      data: { message, type: ErrorTypeEnum.Error },
     });
   }
 
