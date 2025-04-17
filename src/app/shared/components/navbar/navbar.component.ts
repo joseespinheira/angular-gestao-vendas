@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
@@ -17,4 +17,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatButtonModule,
   ],
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+  @Input() sidenav: MatSidenav = {} as MatSidenav;
+}

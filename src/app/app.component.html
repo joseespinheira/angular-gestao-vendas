@@ -1,5 +1,20 @@
-<app-navbar></app-navbar>
-
-<div class="container mt-4">
-  <router-outlet></router-outlet>
-</div>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" class="sidenav" [opened]="false">
+    <app-navbar [sidenav]="sidenav"></app-navbar>
+  </mat-sidenav>
+  <!-- Conteúdo Principal -->
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <!-- <mat-icon>menu</mat-icon> -->
+      <!-- <button mat-icon-button > -->
+      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+      <!-- </button> -->
+      <span class="mx-3">Gestão de Vendas</span>
+    </mat-toolbar>
+    <div class="content">
+      <div class="container mt-4">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
