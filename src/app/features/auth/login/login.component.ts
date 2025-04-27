@@ -50,15 +50,10 @@ export class LoginComponent {
   }
 
   navigateToRegister() {
-    this.router.navigate(['/login/register']);
+    this.router.navigate(['login/register']);
   }
 
   navigateToForgotPassword() {
-    this.router.navigate(['/login/forgot-password']);
-  }
-
-  texto() {
-    let texto = 'texto()';
-    return texto;
+    this.router.navigate(['login/forgot-password']);
   }
 }

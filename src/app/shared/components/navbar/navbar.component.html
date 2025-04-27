@@ -1,5 +1,5 @@
 <mat-nav-list>
-  <a mat-list-item routerLink="/sales" (click)="sidenav.close()">
+  <a mat-list-item (click)="sidenav.close()">
     <div class="d-flex align-items-center">
       <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
       <label for="menu" class="mx-3">Menu</label>
@@ -8,5 +8,5 @@
 
   <a mat-list-item routerLink="/sales" (click)="sidenav.close()">Vendas</a>
   <a mat-list-item routerLink="/clients" (click)="sidenav.close()">Clientes</a>
-  <a mat-list-item routerLink="/inventory" (click)="sidenav.close()">Estoque</a>
+  <a mat-list-item routerLink="/products" (click)="sidenav.close()">Produtos</a>
 </mat-nav-list>

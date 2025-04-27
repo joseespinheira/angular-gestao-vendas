@@ -11,6 +11,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { provideNgxMask } from 'ngx-mask';
 import { AppComponent } from './app/app.component';
 import { appRoutes } from './app/app.routes';
 import { autenticacaoInterceptor } from './app/core/interceptors/http.interceptor';
@@ -26,6 +27,7 @@ bootstrapApplication(AppComponent, {
     ScreenTrackingService,
     UserTrackingService,
     provideHttpClient(withInterceptors([autenticacaoInterceptor])),
+    provideNgxMask(), // Configuração do ngx-mask
   ],
 }).catch((err) => {
   console.error(err);

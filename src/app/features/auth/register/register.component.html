@@ -1,17 +1,115 @@
-<h2>Cadastro</h2>
-<form (ngSubmit)="register()">
-  <label for="email">Email ou CPF:</label>
-  <input type="text" id="email" [(ngModel)]="email" name="email" required />
+<div class="register-container">
+  <h1>Cadastro</h1>
+  <form (ngSubmit)="register(registerForm)" #registerForm="ngForm" novalidate>
+    <!-- Campo Email -->
+    <div class="form-group">
+      <label for="email" class="float-start">Email</label>
+      <input
+        id="email"
+        type="email"
+        [(ngModel)]="email"
+        name="email"
+        class="form-control"
+        required
+        email
+        #emailInput="ngModel"
+        autocomplete="email"
+      />
+      @if(emailInput.invalid && emailInput.touched || showErrors) {
+      <div class="text-danger">
+        @if(emailInput.errors && emailInput.errors['required']) {
+        <small>O email é obrigatório.</small>
+        } @if(emailInput.errors && emailInput.errors['email']) {
+        <small>Digite um email válido.</small>
+        }
+      </div>
+      }
+    </div>
 
-  <label for="password">Senha:</label>
-  <input
-    type="password"
-    id="password"
-    [(ngModel)]="password"
-    name="password"
-    required
-  />
+    <!-- Campo Telefone -->
+    <div class="form-group">
+      <label for="phone" class="float-start">Telefone</label>
+      <input
+        id="phone"
+        type="tel"
+        [(ngModel)]="phone"
+        name="phone"
+        class="form-control"
+        required
+        mask="(00) 00000-0000"
+        pattern="[0-9]{10,11}"
+        #phoneInput="ngModel"
+        title="Digite um telefone válido com 10 ou 11 dígitos"
+      />
+      @if(phoneInput.invalid && phoneInput.touched || showErrors) {
+      <div class="text-danger">
+        @if(phoneInput.errors && phoneInput.errors['required']) {
+        <small>O telefone é obrigatório.</small>
+        } @if(phoneInput.errors && phoneInput.errors['pattern']) {
+        <small>Digite um telefone válido (apenas números com DDD).</small>
+        }
+      </div>
+      }
+    </div>
 
-  <button type="submit">Cadastrar</button>
-</form>
-<button (click)="navigateToLogin()">Voltar ao login</button>
+    <!-- Campo CPF -->
+    <div class="form-group">
+      <label for="cpf" class="float-start">CPF</label>
+      <input
+        id="cpf"
+        type="text"
+        [(ngModel)]="cpf"
+        name="cpf"
+        class="form-control"
+        required
+        mask="000.000.000-00"
+        #cpfInput="ngModel"
+        (input)="onCpfInput()"
+        (blur)="formatCpf()"
+        title="Digite um CPF válido com 11 dígitos"
+      />
+
+      @if(cpfInput.invalid && cpfInput.touched || showErrors) {
+      <div class="text-danger">
+        @if(cpfInput.errors && cpfInput.errors['required']) {
+        <small>O CPF é obrigatório.</small>
+        } @if(cpfInvalid) {
+        <small>O CPF digitado é inválido.</small>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- Campo Senha -->
+    <div class="form-group">
+      <label for="password" class="float-start">Senha</label>
+      <input
+        id="password"
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        class="form-control"
+        required
+        minlength="8"
+        #passwordInput="ngModel"
+        autocomplete="new-password"
+      />
+      @if(passwordInput.invalid && passwordInput.touched || showErrors) {
+      <div class="text-danger">
+        @if(passwordInput.errors && passwordInput.errors['required']) {
+        <small>A senha é obrigatória.</small>
+        } @if(passwordInput.errors && passwordInput.errors['minlength']) {
+        <small>A senha deve ter pelo menos 8 caracteres.</small>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="d-flex justify-content-between mt-3 align-items-center">
+      <button (click)="navigateToLogin()" class="btn btn-secondary w-50 me-2">
+        Voltar ao login
+      </button>
+      <button type="submit" class="btn btn-primary w-50">Cadastrar</button>
+    </div>
+  </form>
+</div>

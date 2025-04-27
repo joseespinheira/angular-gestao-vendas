@@ -9,6 +9,7 @@ import {
 } from '@angular/fire/auth';
 import { doc, Firestore } from '@angular/fire/firestore';
 import { DocumentData, getDoc, setDoc } from 'firebase/firestore';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,19 @@ export class AuthService {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
 
-  constructor() {}
+  private isLoggedInSubject = new BehaviorSubject<boolean>(
+    !!this.auth.currentUser
+  );
+
+  get isLoggedIn$(): Observable<boolean> {
+    return this.isLoggedInSubject.asObservable();
+  }
+
+  constructor() {
+    this.auth.onAuthStateChanged((user) => {
+      this.isLoggedInSubject.next(!!user);
+    });
+  }
 
   /**
    * Realiza o login do usuário com email e senha.
@@ -55,8 +68,9 @@ export class AuthService {
    * Faz o logout do usuário.
    * @returns Uma Promise que resolve quando o logout é concluído.
    */
-  logout(): Promise<void> {
-    return signOut(this.auth);
+  async logout(): Promise<void> {
+    await signOut(this.auth);
+    this.isLoggedInSubject.next(false); // Atualiza o estado de login
   }
 
   /**
@@ -71,7 +85,7 @@ export class AuthService {
    * Salva os dados do usuário no Firestore.
    * @param email Email do usuário.
    */
-  async saveUserData(email: string): Promise<any> {
+  async saveUserData(email: string, phone: string, cpf: string): Promise<any> {
     const userId = this.getCurrentUser()?.uid;
     if (!userId) {
       return Promise.reject('Usuário não autenticado.');
@@ -80,6 +94,11 @@ export class AuthService {
     const userRef = doc(this.firestore, `users/${userId}`);
     const userData = {
       email: email,
+      phone: phone,
+      cpf: cpf,
+      profile: '1',
+      status: '1',
+      createdAt: new Date(),
     };
 
     return setDoc(userRef, userData)
@@ -120,5 +139,9 @@ export class AuthService {
         console.error('Erro ao recuperar os dados do usuário:', error);
         throw error;
       });
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.auth.currentUser; // Retorna true se o usuário estiver logado
   }
 }

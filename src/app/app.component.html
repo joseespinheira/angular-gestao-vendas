@@ -4,12 +4,17 @@
   </mat-sidenav>
   <!-- Conteúdo Principal -->
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <!-- <mat-icon>menu</mat-icon> -->
-      <!-- <button mat-icon-button > -->
-      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
-      <!-- </button> -->
-      <span class="mx-3">Gestão de Vendas</span>
+    <mat-toolbar color="primary p-1">
+      @if(isLoggedIn) {
+      <mat-nav-list class="m-0 p-0">
+        <a mat-list-item class="m-0">
+          <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+        </a>
+      </mat-nav-list>
+      }
+      <label class="w-100 d-flex justify-content-center"
+        >Gestão de Vendas</label
+      >
     </mat-toolbar>
     <div class="content">
       <div class="container mt-4">

@@ -12,11 +12,3 @@ body {
 .sidenav-container {
   height: 100vh; /* Garante que o contêiner ocupe toda a altura da tela */
 }
-
-.sidenav {
-  width: 250px; /* Define a largura do menu lateral */
-}
-
-.content {
-  padding: 16px; /* Adiciona espaçamento ao conteúdo principal */
-}
