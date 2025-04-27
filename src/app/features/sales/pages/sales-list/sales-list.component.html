@@ -1,4 +1,5 @@
 <div class="sales-list">
+  <button (click)="goBack()" class="btn btn-secondary">Voltar</button>
   <h1>Lista de Vendas</h1>
   <table>
     <thead>
@@ -10,15 +11,14 @@
       </tr>
     </thead>
     <tbody>
-        @for (sale of sales; track $index) {
-            <tr>
-                <td>{{ sale.id }}</td>
-                <td>{{ sale.client }}</td>
-                <td>{{ sale.total | currency:'BRL' }}</td>
-                <td>{{ sale.date }}</td>
-            </tr>
-        }
+      @for (sale of sales; track $index) {
+      <tr>
+        <td>{{ sale.id }}</td>
+        <td>{{ sale.client }}</td>
+        <td>{{ sale.total | currency : "BRL" }}</td>
+        <td>{{ sale.date }}</td>
+      </tr>
+      }
     </tbody>
   </table>
-  <button (click)="navigateToLogin()">Logoff</button>
 </div>

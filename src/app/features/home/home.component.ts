@@ -23,8 +23,15 @@ export class HomeComponent {
   }
 
   navigateTo(value: string): void {
-    this.dialog.open(ErrorDialogComponent, {
-      data: { message: 'Em construção', type: ErrorTypeEnum.Info },
-    });
+    switch (value) {
+      case 'sales':
+        this.router.navigate(['/sales']);
+        break;
+      default:
+        this.dialog.open(ErrorDialogComponent, {
+          data: { message: 'Em construção', type: ErrorTypeEnum.Info },
+        });
+        break;
+    }
   }
 }
