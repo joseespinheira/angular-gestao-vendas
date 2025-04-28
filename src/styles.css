@@ -1,9 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 
+@media (max-width: 739px) {
+  .d-md-table-cell {
+    display: none !important; /* Oculta as colunas extras em telas menores */
+  }
+}
+
 html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;

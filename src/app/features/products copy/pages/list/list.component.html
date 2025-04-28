@@ -1,0 +1,24 @@
+<div class="list">
+  <button (click)="goBack()" class="btn btn-secondary">Voltar</button>
+  <h1>Lista de Vendas</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Total</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (product of products; track $index) {
+      <tr>
+        <td>{{ product.id }}</td>
+        <td>{{ product.client }}</td>
+        <td>{{ product.total | currency : "BRL" }}</td>
+        <td>{{ product.date }}</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>

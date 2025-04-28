@@ -13,6 +13,18 @@ export const appRoutes: Routes = [
       import('./features/sales/sales.routes').then((m) => m.salesRoutes),
   },
   {
+    path: 'products',
+    loadChildren: () =>
+      import('./features/products/products.routes').then(
+        (m) => m.productsRoutes
+      ),
+  },
+  {
+    path: 'clients',
+    loadChildren: () =>
+      import('./features/sales/sales.routes').then((m) => m.salesRoutes),
+  },
+  {
     path: 'home',
     loadComponent: () =>
       import('./features/home/home.component').then((m) => m.HomeComponent),

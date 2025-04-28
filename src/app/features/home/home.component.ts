@@ -27,6 +27,9 @@ export class HomeComponent {
       case 'sales':
         this.router.navigate(['/sales']);
         break;
+      case 'products':
+        this.router.navigate(['/products']);
+        break;
       default:
         this.dialog.open(ErrorDialogComponent, {
           data: { message: 'Em construção', type: ErrorTypeEnum.Info },
