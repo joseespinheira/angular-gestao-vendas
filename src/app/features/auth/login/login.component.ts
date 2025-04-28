@@ -13,7 +13,7 @@ import { ErrorTypeEnum } from '../../../core/enums/error-type.enum';
   styleUrls: ['./login.component.css'],
   imports: [FormsModule],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   email = '';
   password = '';
 
@@ -21,6 +21,14 @@ export class LoginComponent {
   private dialog = inject(MatDialog);
 
   constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    this.authService.isLoggedIn$.subscribe((isLoggedIn) => {
+      if (isLoggedIn) {
+        this.router.navigate(['/home']);
+      }
+    });
+  }
 
   login() {
     this.authService
