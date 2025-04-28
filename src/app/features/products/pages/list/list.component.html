@@ -12,7 +12,6 @@
         <th>Estoque</th>
         <th>Valor</th>
         <th class="d-md-table-cell">Data Cadastro</th>
-        <th class="d-md-table-cell">Ações</th>
         <th>Mais</th>
       </tr>
     </thead>
@@ -21,21 +20,38 @@
       <tr>
         <td class="d-md-table-cell">{{ product.id }}</td>
         <td>
-          {{ product.client | slice : 0 : (maxCharacters$ | async) || 0 }}
+          {{ product.name | slice : 0 : (maxCharacters$ | async) || 0 }}
           {{
-            product.client.length > ((maxCharacters$ | async) || 0) ? "..." : ""
+            product.name.length > ((maxCharacters$ | async) || 0) ? "..." : ""
           }}
         </td>
-        <td>{{ product.total }}</td>
-        <td>{{ product.total | currency : "BRL" }}</td>
-        <td class="d-md-table-cell">{{ product.date }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.price | currency : "BRL" }}</td>
         <td class="d-md-table-cell">
-          <button class="btn btn-primary btn-sm">Editar</button>
+          {{ product.createdAt | date : "dd/MM/yyyy" }}
         </td>
         <td>
-          <button class="btn btn-info btn-sm" (click)="showDetails(product)">
-            <i class="bi bi-three-dots"></i>
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            aria-label="Example icon-button with a menu"
+          >
+            <mat-icon>more_vert</mat-icon>
           </button>
+          <mat-menu #menu="matMenu">
+            <!-- <button mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>Editar</span>
+            </button> -->
+            <button mat-menu-item (click)="deleteProduct(product.id)">
+              <mat-icon>delete</mat-icon>
+              <span>Excluir</span>
+            </button>
+            <!-- <button mat-menu-item>
+              <mat-icon>link</mat-icon>
+              <span>Detalhes</span>
+            </button> -->
+          </mat-menu>
         </td>
       </tr>
       }

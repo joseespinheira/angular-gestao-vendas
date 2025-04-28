@@ -12,9 +12,7 @@ export class PageBaseComponent {
 
   private authService = inject(AuthService);
 
-  constructor() {}
-
-  ngOnInit(): void {
+  constructor() {
     this.authService.isLoggedIn$.subscribe((loggedIn) => {
       this.isLoggedIn = loggedIn;
     });

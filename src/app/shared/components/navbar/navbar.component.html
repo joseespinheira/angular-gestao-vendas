@@ -2,7 +2,7 @@
   <a mat-list-item (click)="sidenav.close()">
     <div class="d-flex align-items-center">
       <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
-      <label for="menu" class="mx-3">Menu</label>
+      <label class="mx-3">Menu</label>
     </div>
   </a>
 
@@ -10,4 +10,5 @@
   <a mat-list-item (click)="redirectTo('sales')">Vendas</a>
   <a mat-list-item (click)="redirectTo('clients')">Clientes</a>
   <a mat-list-item (click)="redirectTo('products')">Produtos</a>
+  <a mat-list-item (click)="redirectTo('/')">Sair</a>
 </mat-nav-list>

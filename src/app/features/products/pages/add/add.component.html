@@ -12,19 +12,16 @@
         class="form-control"
         required
       />
-      <div
-        *ngIf="
-          productForm.get('name')?.invalid && productForm.get('name')?.touched
-        "
-        class="text-danger"
-      >
-        <small *ngIf="productForm.get('name')?.errors?.['required']"
-          >O nome é obrigatório.</small
-        >
-        <small *ngIf="productForm.get('name')?.errors?.['minlength']"
-          >O nome deve ter pelo menos 3 caracteres.</small
-        >
+      @if( productForm.get('name')?.invalid && productForm.get('name')?.touched
+      ){
+      <div class="text-danger">
+        @if( productForm.get('name')?.errors?.['required'] ){
+        <small> O nome é obrigatório. </small>
+        } @if( productForm.get('name')?.errors?.['minlength'] ){
+        <small> O nome deve ter pelo menos 3 caracteres. </small>
+        }
       </div>
+      }
     </div>
 
     <!-- Descrição -->
@@ -36,17 +33,16 @@
         class="form-control"
         required
       ></textarea>
-      <div
-        *ngIf="
-          productForm.get('description')?.invalid &&
-          productForm.get('description')?.touched
-        "
-        class="text-danger"
-      >
-        <small *ngIf="productForm.get('description')?.errors?.['required']"
-          >A descrição é obrigatória.</small
-        >
+      @if( productForm.get('description')?.invalid &&
+      productForm.get('description')?.touched ){
+      <div class="text-danger">
+        @if( productForm.get('description')?.errors?.['required'] ){
+        <small> A descrição é obrigatória. </small>
+        } @if( productForm.get('description')?.errors?.['minlength'] ){
+        <small> A descrição deve ter pelo menos 10 caracteres. </small>
+        }
       </div>
+      }
     </div>
 
     <!-- Estoque -->
@@ -59,19 +55,16 @@
         class="form-control"
         required
       />
-      <div
-        *ngIf="
-          productForm.get('stock')?.invalid && productForm.get('stock')?.touched
-        "
-        class="text-danger"
-      >
-        <small *ngIf="productForm.get('stock')?.errors?.['required']"
-          >O estoque é obrigatório.</small
-        >
-        <small *ngIf="productForm.get('stock')?.errors?.['min']"
-          >O estoque deve ser maior ou igual a 0.</small
-        >
+      @if( productForm.get('stock')?.invalid &&
+      productForm.get('stock')?.touched ){
+      <div class="text-danger">
+        @if( productForm.get('stock')?.errors?.['required'] ){
+        <small> O estoque é obrigatório. </small>
+        } @if( productForm.get('stock')?.errors?.['min'] ){
+        <small> O estoque deve ser maior que 0. </small>
+        }
       </div>
+      }
     </div>
 
     <!-- Preço -->
@@ -84,19 +77,16 @@
         class="form-control"
         required
       />
-      <div
-        *ngIf="
-          productForm.get('price')?.invalid && productForm.get('price')?.touched
-        "
-        class="text-danger"
-      >
-        <small *ngIf="productForm.get('price')?.errors?.['required']"
-          >O preço é obrigatório.</small
-        >
-        <small *ngIf="productForm.get('price')?.errors?.['min']"
-          >O preço deve ser maior que 0.</small
-        >
+      @if( productForm.get('price')?.invalid &&
+      productForm.get('price')?.touched ){
+      <div class="text-danger">
+        @if( productForm.get('price')?.errors?.['required'] ){
+        <small> O preço é obrigatório. </small>
+        } @if( productForm.get('price')?.errors?.['min'] ){
+        <small> O preço deve ser maior que 0. </small>
+        }
       </div>
+      }
     </div>
 
     <!-- Categoria -->
@@ -109,39 +99,14 @@
         class="form-control"
         required
       />
-      <div
-        *ngIf="
-          productForm.get('category')?.invalid &&
-          productForm.get('category')?.touched
-        "
-        class="text-danger"
-      >
-        <small *ngIf="productForm.get('category')?.errors?.['required']"
-          >A categoria é obrigatória.</small
-        >
+      @if( productForm.get('category')?.invalid &&
+      productForm.get('category')?.touched ){
+      <div class="text-danger">
+        @if( productForm.get('category')?.errors?.['required'] ){
+        <small> A categoria é obrigatória. </small>
+        }
       </div>
-    </div>
-
-    <!-- Data de Cadastro -->
-    <div class="form-group">
-      <label for="date">Data de Cadastro</label>
-      <input
-        type="date"
-        id="date"
-        formControlName="date"
-        class="form-control"
-        required
-      />
-      <div
-        *ngIf="
-          productForm.get('date')?.invalid && productForm.get('date')?.touched
-        "
-        class="text-danger"
-      >
-        <small *ngIf="productForm.get('date')?.errors?.['required']"
-          >A data de cadastro é obrigatória.</small
-        >
-      </div>
+      }
     </div>
 
     <button

@@ -1,51 +1,73 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
+import { Product } from '@core/models/productDTO';
+import { ProductService } from '@core/services/product.service';
 import { ScreenService } from '@core/services/screen.service';
+import { PageBaseComponent } from '@shared/components/page-base/page-base.component';
 
 @Component({
   selector: 'app-products-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule, MatMenuModule, MatIconModule],
 })
-export class ProductsListComponent implements OnInit {
+export class ProductsListComponent extends PageBaseComponent implements OnInit {
   private router = inject(Router);
   private screenService = inject(ScreenService);
+  private productService = inject(ProductService);
 
-  products = [
-    {
-      id: 1,
-      client: 'Produto com nome grande',
-      total: 150.0,
-      date: '2025-04-13',
-    },
-    { id: 2, client: 'Produto', total: 200.0, date: '2025-04-12' },
-    {
-      id: 3,
-      client: 'Aqui é quase um texto de tanta coisa escrita',
-      total: 300.0,
-      date: '2025-04-11',
-    },
-  ];
-  maxCharacters = 10; // Número inicial de caracteres
-  maxCharacters$ = this.screenService.maxCharacters$; // Observable para o número de caracteres
+  products: Product[] = [];
+  maxCharacters$ = this.screenService.maxCharacters$;
+
+  constructor() {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.getProducts();
+  }
+
+  getProducts() {
+    // chamada a um serviço para obter produtos
+    this.productService.getProducts().subscribe((data) => {
+      console.log('Produtos:', data);
+      this.products = data.map((item) => {
+        console.log('Item:', item);
+        // return {
+        //   ...item,
+        //   //createdAt: item['createdAt'].toDate().toLocaleDateString('pt-BR'),
+        // };
+        return new Product({
+          id: item['id'],
+          name: item['name'],
+          description: item['description'],
+          stock: item['stock'],
+          price: item['price'],
+          category: item['category'],
+          createdAt: item['createdAt'],
+          status: item['status'],
+          userId: item['userId'],
+        });
+      });
+    });
+  }
 
   navigateTo(path: string) {
     this.router.navigate([path]);
   }
 
-  // firestore = inject(Firestore);
-  // itemCollection = collection(this.firestore, 'items');
-  // item$ = collectionData<any>(this.itemCollection);
-
-  ngOnInit(): void {
-    // this.item$.subscribe((data) => {
-    //   this.products = data;
-    // });
-  }
-
   showDetails(product: any): void {
     alert(`Detalhes do Produto:\n${JSON.stringify(product, null, 2)}`);
+  }
+
+  deleteProduct(productId: string): void {
+    this.productService.deleteProduct(productId).then(() => {
+      console.log('Produto excluído com sucesso!');
+      this.getProducts();
+    });
   }
 }
