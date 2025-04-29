@@ -4,23 +4,7 @@
   </mat-sidenav>
   <!-- Conteúdo Principal -->
   <mat-sidenav-content>
-    <mat-toolbar color="primary p-1">
-      @if(isLoggedIn) {
-      <mat-nav-list class="m-0 p-0">
-        <a mat-list-item class="m-0">
-          <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
-        </a>
-      </mat-nav-list>
-      }
-      <span class="w-100 d-flex justify-content-center">Gestão de Vendas</span>
-      @if(isLoggedIn) {
-      <mat-nav-list class="m-0 p-0">
-        <a mat-list-item class="m-0">
-          <!-- <mat-icon (click)="sidenav.toggle()">menu</mat-icon> -->
-        </a>
-      </mat-nav-list>
-      }
-    </mat-toolbar>
+    <app-header [sidenav]="sidenav"></app-header>
     <div class="content">
       <div class="container-fluid mt-1 px-1">
         <router-outlet></router-outlet>

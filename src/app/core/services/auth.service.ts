@@ -43,7 +43,6 @@ export class AuthService {
     return signInWithEmailAndPassword(this.auth, email, password).then(
       (data) => {
         this.isLoggedInSubject.next(true);
-        localStorage.setItem('auth', JSON.stringify(data));
       }
     );
   }

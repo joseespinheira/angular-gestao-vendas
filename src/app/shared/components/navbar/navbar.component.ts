@@ -24,6 +24,11 @@ export class NavbarComponent {
   @Input() sidenav: MatSidenav = {} as MatSidenav;
 
   redirectTo(url: string) {
+    // Verifica se for / deve deslogar o usuario
+    if (url === '/login' || url === '/') {
+      localStorage.removeItem('user');
+    }
+
     this.sidenav.close();
     this.router.navigate([url]);
   }

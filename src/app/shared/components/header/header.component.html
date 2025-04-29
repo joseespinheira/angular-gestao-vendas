@@ -1,0 +1,17 @@
+<mat-toolbar color="primary p-1">
+  @if(isLoggedIn) {
+  <mat-nav-list class="m-0 p-0">
+    <a mat-list-item class="m-0">
+      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+    </a>
+  </mat-nav-list>
+  }
+  <span class="w-100 d-flex justify-content-center">Gestão de Vendas</span>
+  @if(isLoggedIn) {
+  <mat-nav-list class="m-0 p-0">
+    <a mat-list-item class="m-0">
+      <!-- <mat-icon (click)="sidenav.toggle()">menu</mat-icon> -->
+    </a>
+  </mat-nav-list>
+  }
+</mat-toolbar>

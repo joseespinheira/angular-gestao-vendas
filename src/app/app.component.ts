@@ -6,6 +6,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
+import { HeaderComponent } from './shared/components/header/header.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 
 @Component({
@@ -18,6 +19,7 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
     MatListModule,
     MatToolbarModule,
     MatIconModule,
+    HeaderComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
