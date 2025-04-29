@@ -7,8 +7,8 @@
   <table class="table-responsive">
     <thead>
       <tr>
-        <th class="d-md-table-cell">ID</th>
         <th>Produto</th>
+        <th class="d-md-table-cell">Descrição</th>
         <th>Estoque</th>
         <th>Valor</th>
         <th class="d-md-table-cell">Data Cadastro</th>
@@ -18,17 +18,17 @@
     <tbody>
       @for (product of products; track $index) {
       <tr>
-        <td class="d-md-table-cell">{{ product.id }}</td>
         <td>
           {{ product.name | slice : 0 : (maxCharacters$ | async) || 0 }}
           {{
             product.name.length > ((maxCharacters$ | async) || 0) ? "..." : ""
           }}
         </td>
+        <td class="d-md-table-cell">{{ product.description }}</td>
         <td>{{ product.price }}</td>
         <td>{{ product.price | currency : "BRL" }}</td>
         <td class="d-md-table-cell">
-          {{ product.createdAt | date : "dd/MM/yyyy" }}
+          {{ product.createdAt | date : "dd/MM/yyyy HH:mm" }}
         </td>
         <td>
           <button
