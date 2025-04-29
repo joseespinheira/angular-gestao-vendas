@@ -39,8 +39,13 @@ export class AuthService {
    * @param email Email ou CPF do usuário.
    * @param password Senha do usuário.
    */
-  login(email: string, password: string): Promise<any> {
-    return signInWithEmailAndPassword(this.auth, email, password);
+  async login(email: string, password: string): Promise<any> {
+    return signInWithEmailAndPassword(this.auth, email, password).then(
+      (data) => {
+        this.isLoggedInSubject.next(true);
+        localStorage.setItem('auth', JSON.stringify(data));
+      }
+    );
   }
 
   /**

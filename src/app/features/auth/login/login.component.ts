@@ -22,14 +22,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  ngOnInit(): void {
-    localStorage.removeItem('user');
-    this.authService.isLoggedIn$.subscribe((isLoggedIn) => {
-      if (isLoggedIn) {
-        this.authService.logout();
-      }
-    });
-  }
+  ngOnInit(): void {}
 
   login() {
     this.authService
