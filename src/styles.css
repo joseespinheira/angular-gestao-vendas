@@ -19,3 +19,6 @@ body {
 .sidenav-container {
   height: 100vh; /* Garante que o contêiner ocupe toda a altura da tela */
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

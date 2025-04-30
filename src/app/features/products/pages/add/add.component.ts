@@ -39,8 +39,8 @@ export class AddComponent extends PageBaseComponent {
       this.productService
         .addProduct(this.productForm.value)
         .then(() => {
-          console.log('Produto cadastrado com sucesso!');
           this.router.navigate(['/products']);
+          return;
         })
         .catch((error) => {
           console.error('Erro ao cadastrar o produto:', error);

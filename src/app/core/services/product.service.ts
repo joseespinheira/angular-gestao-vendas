@@ -5,7 +5,7 @@ import {
   collectionData,
   Firestore,
 } from '@angular/fire/firestore';
-import { deleteDoc, doc, query, where } from 'firebase/firestore';
+import { deleteDoc, doc, query, updateDoc, where } from 'firebase/firestore';
 import { Product } from '../models/productDTO';
 import { AuthService } from './auth.service';
 
@@ -67,5 +67,10 @@ export class ProductService {
     const productCollection = collection(this.firestore, 'products');
     const productDocRef = doc(productCollection, productId);
     return deleteDoc(productDocRef);
+  }
+
+  updateProductStock(productId: string, newStock: number) {
+    const productDoc = doc(this.firestore, `products/${productId}`);
+    return updateDoc(productDoc, { stock: newStock });
   }
 }

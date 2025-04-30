@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
@@ -8,6 +9,7 @@ import { Product } from '@core/models/productDTO';
 import { ProductService } from '@core/services/product.service';
 import { ScreenService } from '@core/services/screen.service';
 import { PageBaseComponent } from '@shared/components/page-base/page-base.component';
+import { EditStockModalComponent } from '../../components/edit-stock-modal/edit-stock-modal.component';
 
 @Component({
   selector: 'app-products-list',
@@ -19,6 +21,7 @@ export class ProductsListComponent extends PageBaseComponent implements OnInit {
   private router = inject(Router);
   private screenService = inject(ScreenService);
   private productService = inject(ProductService);
+  private dialog = inject(MatDialog);
 
   products: Product[] = [];
   maxCharacters$ = this.screenService.maxCharacters$;
@@ -34,13 +37,7 @@ export class ProductsListComponent extends PageBaseComponent implements OnInit {
   getProducts() {
     // chamada a um serviço para obter produtos
     this.productService.getProducts().subscribe((data) => {
-      console.log('Produtos:', data);
       this.products = data.map((item) => {
-        console.log('Item:', item);
-        // return {
-        //   ...item,
-        //   //createdAt: item['createdAt'].toDate().toLocaleDateString('pt-BR'),
-        // };
         return new Product({
           id: item['id'],
           name: item['name'],
@@ -66,8 +63,26 @@ export class ProductsListComponent extends PageBaseComponent implements OnInit {
 
   deleteProduct(productId: string): void {
     this.productService.deleteProduct(productId).then(() => {
-      console.log('Produto excluído com sucesso!');
       this.getProducts();
+      return;
+    });
+  }
+
+  editStock(product: Product): void {
+    const dialogRef = this.dialog.open(EditStockModalComponent, {
+      width: '400px',
+      data: { product },
+    });
+
+    dialogRef.afterClosed().subscribe((newStock) => {
+      if (newStock !== undefined) {
+        product.stock = newStock; // Atualiza o estoque localmente
+        this.productService
+          .updateProductStock(product.id, newStock)
+          .then(() => {
+            console.log('Estoque atualizado com sucesso!');
+          });
+      }
     });
   }
 }
