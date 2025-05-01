@@ -12,15 +12,35 @@
         <th>Total</th>
         <th>Data Cadastro</th>
         <th>Situação</th>
+        <th>Mais</th>
       </tr>
     </thead>
     <tbody>
       @for (sale of sales; track $index) {
       <tr>
-        <td>{{ sale.client }}</td>
+        <td>{{ sale.clientName }}</td>
         <td>{{ sale.total | currency : "BRL" }}</td>
-        <td>{{ sale.date | date : "dd/MM/yyyy HH:mm:ss" }}</td>
-        <td>{{ sale.status ?? "Pendente" }}</td>
+        <td>{{ sale.createdAt | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+        <td>{{ sale.status }}</td>
+        <td>
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            aria-label="Example icon-button with a menu"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="deleteItem(sale.id)">
+              <mat-icon>delete</mat-icon>
+              <span>Excluir</span>
+            </button>
+            <!-- <button mat-menu-item>
+              <mat-icon>link</mat-icon>
+              <span>Detalhes</span>
+            </button> -->
+          </mat-menu>
+        </td>
       </tr>
       }
     </tbody>
