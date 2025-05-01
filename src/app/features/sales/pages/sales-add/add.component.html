@@ -1,0 +1,75 @@
+<div class="add">
+  <button (click)="goBack()" class="btn btn-secondary">Voltar</button>
+  <h1>Cadastrar Venda</h1>
+  <form [formGroup]="saleForm" (ngSubmit)="onSubmit()">
+    <!-- Cliente -->
+    <div class="form-group d-flex align-items-center">
+      <label for="clientId" class="me-2">Cliente</label>
+      <select
+        id="clientId"
+        formControlName="clientId"
+        class="form-control me-2"
+        required
+        (change)="onClientChange($event)"
+      >
+        <option value="" disabled selected>Selecione um cliente</option>
+        @for(client of clients; track $index) {
+        <option [value]="client.id">
+          {{ client.name }}
+        </option>
+        }
+      </select>
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        (click)="navigateToAddClient()"
+      >
+        <i class="bi bi-plus"></i>
+      </button>
+    </div>
+
+    <!-- Produtos -->
+    <div class="form-group">
+      <h3>Produtos</h3>
+      <button
+        type="button"
+        class="btn btn-primary mb-2"
+        (click)="openProductSearchModal()"
+      >
+        Adicionar Produto
+      </button>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Preço</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (product of products; track $index) {
+          <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price | currency : "BRL" }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Total -->
+    <div class="form-group">
+      <label for="total">Total</label>
+      <input
+        type="text"
+        id="total"
+        formControlName="total"
+        class="form-control"
+        readonly
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="saleForm.invalid">
+      Cadastrar
+    </button>
+  </form>
+</div>

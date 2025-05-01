@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
@@ -20,7 +19,6 @@ export class ClientsListComponent extends PageBaseComponent implements OnInit {
   private router = inject(Router);
   private screenService = inject(ScreenService);
   private clientService = inject(ClientService);
-  private dialog = inject(MatDialog);
 
   clients: Client[] = [];
   maxCharacters$ = this.screenService.maxCharacters$;
@@ -41,10 +39,6 @@ export class ClientsListComponent extends PageBaseComponent implements OnInit {
           return new Client({
             id: item['id'],
             name: item['name'],
-            description: item['description'],
-            stock: item['stock'],
-            price: item['price'],
-            category: item['category'],
             createdAt: item['createdAt'],
             status: item['status'],
             userId: item['userId'],

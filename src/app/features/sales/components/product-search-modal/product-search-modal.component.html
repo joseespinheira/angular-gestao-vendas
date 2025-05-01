@@ -1,0 +1,35 @@
+<h1 mat-dialog-title>Pesquisar Produto</h1>
+<div mat-dialog-content>
+  <input
+    type="text"
+    [(ngModel)]="searchTerm"
+    (input)="filterProducts()"
+    placeholder="Pesquisar produto"
+    class="form-control mb-3"
+  />
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Preço</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (product of filteredProducts; track $index) {
+      <tr>
+        <td>{{ product.name }}</td>
+        <td>{{ product.price | currency : "BRL" }}</td>
+        <td>
+          <button class="btn btn-primary" (click)="addProduct(product)">
+            Adicionar
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Fechar</button>
+</div>
