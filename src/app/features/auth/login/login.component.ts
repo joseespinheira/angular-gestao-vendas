@@ -16,6 +16,7 @@ import { ErrorTypeEnum } from '../../../core/enums/error-type.enum';
 export class LoginComponent implements OnInit {
   email = '';
   password = '';
+  showPassword: boolean = false;
 
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
@@ -57,5 +58,9 @@ export class LoginComponent implements OnInit {
 
   navigateToForgotPassword() {
     this.router.navigate(['login/forgot-password']);
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword; // Alterna entre true e false
   }
 }
