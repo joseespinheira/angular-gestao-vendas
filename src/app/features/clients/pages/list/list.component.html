@@ -1,22 +1,50 @@
 <div class="list">
-  <button (click)="goBack()" class="btn btn-secondary">Voltar</button>
-  <h1>Lista de Vendas</h1>
-  <table>
+  <button (click)="navigateTo('home')" class="btn btn-secondary">Voltar</button>
+  <button (click)="navigateTo('clients/add')" class="btn btn-primary m-1">
+    Adicionar
+  </button>
+  <button (click)="getClients()" class="btn btn-info">Atualizar</button>
+  <h1>Lista de Clientes</h1>
+  <table class="table-responsive">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Cliente</th>
-        <th>Total</th>
-        <th>Data</th>
+        <th>Nome</th>
+
+        <th class="d-md-table-cell">Data Cadastro</th>
+        <th>Mais</th>
       </tr>
     </thead>
     <tbody>
-      @for (product of products; track $index) {
+      @for (client of clients; track $index) {
       <tr>
-        <td>{{ product.id }}</td>
-        <td>{{ product.client }}</td>
-        <td>{{ product.total | currency : "BRL" }}</td>
-        <td>{{ product.date }}</td>
+        <td>
+          {{ client.name | slice : 0 : (maxCharacters$ | async) || 0 }}
+          {{
+            client.name.length > ((maxCharacters$ | async) || 0) ? "..." : ""
+          }}
+        </td>
+        <td class="d-md-table-cell">
+          {{ client.createdAt | date : "dd/MM/yyyy HH:mm" }}
+        </td>
+        <td>
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            aria-label="Example icon-button with a menu"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="deleteClient(client.id)">
+              <mat-icon>delete</mat-icon>
+              <span>Excluir</span>
+            </button>
+            <!-- <button mat-menu-item>
+              <mat-icon>link</mat-icon>
+              <span>Detalhes</span>
+            </button> -->
+          </mat-menu>
+        </td>
       </tr>
       }
     </tbody>

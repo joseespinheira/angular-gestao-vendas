@@ -22,7 +22,7 @@ export const appRoutes: Routes = [
   {
     path: 'clients',
     loadChildren: () =>
-      import('./features/sales/sales.routes').then((m) => m.salesRoutes),
+      import('./features/clients/clients.routes').then((m) => m.clientsRoutes),
   },
   {
     path: 'home',

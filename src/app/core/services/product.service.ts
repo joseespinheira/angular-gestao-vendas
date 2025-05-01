@@ -141,4 +141,27 @@ export class ProductService {
 
     await this.logAudit(productId, 'update', before, after);
   }
+
+  /**
+   * Atualiza o preço de um produto.
+   * @param productId ID do produto a ser atualizado.
+   * @param newStock Novo valor de preço.
+   * @return Promise que resolve quando o preço for atualizado.
+   */
+  async updateProductPrice(productId: string, newPrice: number): Promise<void> {
+    const productDoc = doc(this.firestore, `products/${productId}`);
+
+    // Obter os dados do documento antes da atualização
+    const productSnapshot = await getDoc(productDoc);
+    if (!productSnapshot.exists()) {
+      throw new Error('Produto não encontrado!');
+    }
+
+    const before = productSnapshot.data();
+    const after = { ...before, price: newPrice };
+
+    await updateDoc(productDoc, { price: newPrice });
+
+    await this.logAudit(productId, 'update', before, after);
+  }
 }

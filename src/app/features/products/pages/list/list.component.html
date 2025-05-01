@@ -44,6 +44,10 @@
               <mat-icon>edit</mat-icon>
               <span>Editar Estoque</span>
             </button>
+            <button mat-menu-item (click)="editPrice(product)">
+              <mat-icon>edit</mat-icon>
+              <span>Editar Preço</span>
+            </button>
             <button mat-menu-item (click)="deleteProduct(product.id)">
               <mat-icon>delete</mat-icon>
               <span>Excluir</span>

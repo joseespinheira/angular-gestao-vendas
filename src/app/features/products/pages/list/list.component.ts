@@ -9,6 +9,7 @@ import { Product } from '@core/models/productDTO';
 import { ProductService } from '@core/services/product.service';
 import { ScreenService } from '@core/services/screen.service';
 import { PageBaseComponent } from '@shared/components/page-base/page-base.component';
+import { EditpriceModalComponent } from '../../components/edit-price-modal/edit-price-modal.component';
 import { EditStockModalComponent } from '../../components/edit-stock-modal/edit-stock-modal.component';
 
 @Component({
@@ -85,6 +86,24 @@ export class ProductsListComponent extends PageBaseComponent implements OnInit {
         product.stock = newStock; // Atualiza o estoque localmente
         this.productService
           .updateProductStock(product.id, newStock)
+          .then(() => {
+            console.log('Estoque atualizado com sucesso!');
+          });
+      }
+    });
+  }
+
+  editPrice(product: Product): void {
+    const dialogRef = this.dialog.open(EditpriceModalComponent, {
+      width: '400px',
+      data: { product },
+    });
+
+    dialogRef.afterClosed().subscribe((newPrice) => {
+      if (newPrice !== undefined) {
+        product.price = newPrice; // Atualiza o estoque localmente
+        this.productService
+          .updateProductPrice(product.id, newPrice)
           .then(() => {
             console.log('Estoque atualizado com sucesso!');
           });
