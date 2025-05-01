@@ -35,21 +35,27 @@ export class ProductsListComponent extends PageBaseComponent implements OnInit {
   }
 
   getProducts() {
-    // chamada a um serviço para obter produtos
-    this.productService.getProducts().subscribe((data) => {
-      this.products = data.map((item) => {
-        return new Product({
-          id: item['id'],
-          name: item['name'],
-          description: item['description'],
-          stock: item['stock'],
-          price: item['price'],
-          category: item['category'],
-          createdAt: item['createdAt'],
-          status: item['status'],
-          userId: item['userId'],
+    this.products = [];
+    this.productService.getProducts().subscribe({
+      next: (data) => {
+        this.products = data.map((item) => {
+          return new Product({
+            id: item['id'],
+            name: item['name'],
+            description: item['description'],
+            stock: item['stock'],
+            price: item['price'],
+            category: item['category'],
+            createdAt: item['createdAt'],
+            status: item['status'],
+            userId: item['userId'],
+          });
         });
-      });
+      },
+      error: (err) => {
+        console.error('Erro ao carregar produtos:', err);
+        this.router.navigate(['/login']); // Redireciona para login se não autenticado
+      },
     });
   }
 

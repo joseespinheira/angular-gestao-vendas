@@ -26,13 +26,13 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
 })
 export class AppComponent {
   title = 'angular-gestao-vendas';
-  isLoggedIn = false;
+  // isLoggedIn = false;
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.authService.isLoggedIn$.subscribe((loggedIn) => {
-      this.isLoggedIn = loggedIn;
-    });
+    // this.authService.isLoggedIn$.subscribe((loggedIn) => {
+    //   this.isLoggedIn = loggedIn;
+    // });
   }
 }

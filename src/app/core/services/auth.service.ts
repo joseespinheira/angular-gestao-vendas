@@ -8,7 +8,7 @@ import {
   UserCredential,
 } from '@angular/fire/auth';
 import { doc, Firestore } from '@angular/fire/firestore';
-import { Router } from '@angular/router';
+import { onAuthStateChanged } from 'firebase/auth';
 import { DocumentData, getDoc, setDoc } from 'firebase/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -18,20 +18,23 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class AuthService {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
-  private router = inject(Router);
 
-  private isLoggedInSubject = new BehaviorSubject<boolean>(
-    !!this.auth.currentUser
-  );
+  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
 
   get isLoggedIn$(): Observable<boolean> {
     return this.isLoggedInSubject.asObservable();
   }
 
   constructor() {
-    this.auth.onAuthStateChanged((user) => {
-      this.isLoggedInSubject.next(!!user);
+    onAuthStateChanged(this.auth, (user) => {
+      this.currentUserSubject.next(user);
+      this.isLoggedInSubject.next(!!user); // Estado de carregamento concluído
     });
+  }
+
+  get currentUser$(): Observable<User | null> {
+    return this.currentUserSubject.asObservable();
   }
 
   /**
@@ -40,11 +43,7 @@ export class AuthService {
    * @param password Senha do usuário.
    */
   async login(email: string, password: string): Promise<any> {
-    return signInWithEmailAndPassword(this.auth, email, password).then(
-      (data) => {
-        this.isLoggedInSubject.next(true);
-      }
-    );
+    return signInWithEmailAndPassword(this.auth, email, password);
   }
 
   /**
@@ -76,7 +75,6 @@ export class AuthService {
    */
   async logout(): Promise<void> {
     await signOut(this.auth);
-    this.isLoggedInSubject.next(false); // Atualiza o estado de login
   }
 
   /**
@@ -84,11 +82,7 @@ export class AuthService {
    * Retorna null se não houver usuário autenticado.
    */
   getCurrentUser(): User | null {
-    if (!this.auth.currentUser) {
-      this.router.navigate(['/']);
-      return null;
-    }
-    return this.auth.currentUser;
+    return this.currentUserSubject.value;
   }
 
   /**
@@ -149,9 +143,5 @@ export class AuthService {
         console.error('Erro ao recuperar os dados do usuário:', error);
         throw error;
       });
-  }
-
-  isAuthenticated(): boolean {
-    return !!this.auth.currentUser; // Retorna true se o usuário estiver logado
   }
 }
