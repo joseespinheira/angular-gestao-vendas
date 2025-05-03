@@ -3,8 +3,8 @@
   <h1>Cadastrar Venda</h1>
   <form [formGroup]="saleForm" (ngSubmit)="onSubmit()">
     <!-- Cliente -->
-    <div class="form-group d-flex align-items-center">
-      <label for="clientId" class="me-2">Cliente</label>
+    <div class="form-group d-flex flex-column align-items-left">
+      <label for="clientId" class="me-2">Cliente:</label>
       <select
         id="clientId"
         formControlName="clientId"
@@ -19,18 +19,18 @@
         </option>
         }
       </select>
-      <button
+      <!-- <button
         type="button"
         class="btn btn-outline-primary"
         (click)="navigateToAddClient()"
       >
         <i class="bi bi-plus"></i>
-      </button>
+      </button> -->
     </div>
 
     <!-- Produtos -->
-    <div class="form-group">
-      <h3>Produtos</h3>
+    <div class="form-group d-flex flex-column align-items-left">
+      <label>Produtos:</label>
       <button
         type="button"
         class="btn btn-primary mb-2"
@@ -38,11 +38,12 @@
       >
         Adicionar Produto
       </button>
-      <table class="table">
+      <table class="">
         <thead>
           <tr>
             <th>Nome</th>
-            <th>Preço</th>
+            <th>Preço (unid)</th>
+            <th>Qtd</th>
           </tr>
         </thead>
         <tbody>
@@ -50,6 +51,25 @@
           <tr>
             <td>{{ product.name }}</td>
             <td>{{ product.price | currency : "BRL" }}</td>
+            <td>
+              <div class="d-flex align-items-center">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary btn-sm me-2 icon-button"
+                  (click)="decreaseStock($index)"
+                >
+                  -
+                </button>
+                {{ product.stock }}
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary btn-sm ms-2 icon-button"
+                  (click)="increaseStock($index)"
+                >
+                  +
+                </button>
+              </div>
+            </td>
           </tr>
           }
         </tbody>
@@ -63,6 +83,7 @@
         type="text"
         id="total"
         formControlName="total"
+        [value]="saleForm.get('total')?.value | currency : 'BRL'"
         class="form-control"
         readonly
       />

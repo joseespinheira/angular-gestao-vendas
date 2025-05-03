@@ -1,5 +1,8 @@
 // filepath: c:\xampp\htdocs\angular-gestao-vendas\src\main.ts
+import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import localePt from '@angular/common/locales/pt';
+import { enableProdMode, LOCALE_ID } from '@angular/core';
 import {
   getAnalytics,
   provideAnalytics,
@@ -17,6 +20,13 @@ import { appRoutes } from './app/app.routes';
 import { autenticacaoInterceptor } from './app/core/interceptors/http.interceptor';
 import { environment } from './environments/environment';
 
+// Registrar a localização 'pt-BR'
+registerLocaleData(localePt);
+
+if (environment.production) {
+  enableProdMode();
+}
+
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(appRoutes),
@@ -26,6 +36,7 @@ bootstrapApplication(AppComponent, {
     provideAnalytics(() => getAnalytics()),
     ScreenTrackingService,
     UserTrackingService,
+    { provide: LOCALE_ID, useValue: 'pt-BR' }, // Define a localização global
     provideHttpClient(withInterceptors([autenticacaoInterceptor])),
     provideNgxMask(), // Configuração do ngx-mask
   ],

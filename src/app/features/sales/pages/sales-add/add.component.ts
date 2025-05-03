@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
 import {
   FormBuilder,
   FormGroup,
@@ -9,8 +8,10 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ClientService } from '../../../../core/services/client.service';
-import { SaleService } from '../../../../core/services/sale.service';
+import { Product } from '@core/models/productDTO';
+import { ClientService } from '@core/services/client.service';
+import { HeaderService } from '@core/services/header.service';
+import { SaleService } from '@core/services/sale.service';
 import { ProductSearchModalComponent } from '../../components/product-search-modal/product-search-modal.component';
 
 @Component({
@@ -21,20 +22,20 @@ import { ProductSearchModalComponent } from '../../components/product-search-mod
 })
 export class AddComponent implements OnInit {
   saleForm!: FormGroup;
-  clients!: any[]; // Lista de clientes
-  products: any[] = []; // Lista de produtos adicionados à venda
+  clients!: any[];
+  products: Product[] = [];
 
-  private firestore = inject(Firestore);
   private saleService = inject(SaleService);
   private clientService = inject(ClientService);
   private dialog = inject(MatDialog);
+  private headerService = inject(HeaderService);
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.saleForm = this.fb.group({
-      clientId: ['', Validators.required], // Cliente selecionado
-      clientName: ['', Validators.required], // Nome do cliente
-      products: [[], Validators.required], // Produtos adicionados
-      total: [0, Validators.required], // Total da venda
+      clientId: ['', Validators.required],
+      clientName: ['', Validators.required],
+      products: [[], Validators.required],
+      total: [0, Validators.required],
       createdAt: [Date.now()],
       status: ['Pendente'],
     });
@@ -60,7 +61,18 @@ export class AddComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((selectedProduct) => {
       if (selectedProduct) {
-        this.products.push(selectedProduct);
+        const existingProduct = this.products.find(
+          (product) => product.id === selectedProduct.id
+        );
+
+        if (existingProduct) {
+          // Incrementa a quantidade se o produto já existir
+          existingProduct.stock += 1;
+        } else {
+          // Adiciona o produto com quantidade inicial
+          this.products.push({ ...selectedProduct, stock: 1 });
+        }
+
         this.saleForm.patchValue({ products: this.products });
         this.updateTotal();
       }
@@ -78,38 +90,57 @@ export class AddComponent implements OnInit {
     }
   }
 
+  increaseStock(index: number): void {
+    this.products[index].stock += 1;
+    this.updateTotal();
+  }
+
+  decreaseStock(index: number): void {
+    if (this.products[index].stock > 1) {
+      this.products[index].stock -= 1;
+    } else {
+      this.products.splice(index, 1);
+    }
+    this.updateTotal();
+  }
+
   updateTotal(): void {
     const total = this.products.reduce(
-      (sum, product) => sum + product.price,
+      (sum, product) => sum + product.price * product.stock,
       0
     );
     this.saleForm.patchValue({ total });
+    if (this.products.length === 0) {
+      this.saleForm.get('total')?.setErrors({ required: true });
+      return;
+    }
   }
 
   onSubmit(): void {
+    if (this.products.length === 0) {
+      this.saleForm.get('total')?.setErrors({ required: true });
+      return;
+    }
+
     if (this.saleForm.valid) {
       const saleData = {
         ...this.saleForm.value,
         products: this.products,
       };
 
-      this.saleService.addSale(saleData).then(() => {
-        this.router.navigate(['/sales']);
-      });
-
-      // const salesCollection = collection(this.firestore, 'sales');
-      // addDoc(salesCollection, saleData)
-      //   .then(() => {
-      //     this.router.navigate(['/sales']);
-      //   })
-      //   .catch((error) => {
-      //     console.error('Erro ao cadastrar a venda:', error);
-      //   });
+      this.saleService
+        .addSale(saleData)
+        .then(() => {
+          this.router.navigate(['/sales']);
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
     }
   }
 
   goBack(): void {
-    this.router.navigate(['/sales']);
+    this.router.navigate([this.headerService.getPreviousPage()]);
   }
 
   navigateToAddClient(): void {

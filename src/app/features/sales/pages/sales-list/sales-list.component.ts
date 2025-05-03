@@ -50,6 +50,8 @@ export class SalesListComponent implements OnInit {
   }
 
   deleteItem(id: string) {
+    alert('Não é possível excluir uma venda!');
+    return;
     this.saleService.deleteSale(id).then(() => {
       console.log('Venda excluída com sucesso!');
       this.getSales();

@@ -20,5 +20,16 @@ body {
   height: 100vh; /* Garante que o contêiner ocupe toda a altura da tela */
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.icon-button {
+  width: 30px;
+  height: 30px;
+}

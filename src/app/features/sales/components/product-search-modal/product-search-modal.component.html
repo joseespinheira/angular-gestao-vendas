@@ -7,11 +7,12 @@
     placeholder="Pesquisar produto"
     class="form-control mb-3"
   />
-  <table class="table">
+  <table class="w-100 table-striped table-hover">
     <thead>
       <tr>
         <th>Nome</th>
         <th>Preço</th>
+        <th>Qtd</th>
         <th>Ações</th>
       </tr>
     </thead>
@@ -20,9 +21,10 @@
       <tr>
         <td>{{ product.name }}</td>
         <td>{{ product.price | currency : "BRL" }}</td>
+        <td>{{ product.stock }}</td>
         <td>
           <button class="btn btn-primary" (click)="addProduct(product)">
-            Adicionar
+            Add
           </button>
         </td>
       </tr>
@@ -31,5 +33,5 @@
   </table>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button (click)="close()">Fechar</button>
+  <button mat-button (click)="close()" class="btn btn-secondary">Fechar</button>
 </div>

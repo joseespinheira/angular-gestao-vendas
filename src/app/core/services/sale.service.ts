@@ -3,9 +3,15 @@ import {
   addDoc,
   collection,
   collectionData,
+  deleteDoc,
+  doc,
   Firestore,
+  getDoc,
+  query,
+  Timestamp,
+  updateDoc,
+  where,
 } from '@angular/fire/firestore';
-import { deleteDoc, doc, query, Timestamp, where } from 'firebase/firestore';
 import { Observable, switchMap, take } from 'rxjs';
 import { Sale } from '../models/saleDTO';
 import { AuthService } from './auth.service';
@@ -68,6 +74,25 @@ export class SaleService {
 
     const saleCollection = collection(this.firestore, 'sales');
     const docRef = await addDoc(saleCollection, saleWithUserId);
+
+    // Atualizar o estoque dos produtos
+    for (const product of saleData.products) {
+      const productDocRef = doc(this.firestore, `products/${product.id}`);
+      const productSnapshot = await getDoc(productDocRef);
+
+      if (productSnapshot.exists()) {
+        const currentStock = productSnapshot.data()['stock'] || 0;
+        const newStock = currentStock - product.stock;
+
+        if (newStock < 0) {
+          throw new Error(
+            `Estoque insuficiente para o produto ${product.name}.`
+          );
+        }
+
+        await updateDoc(productDocRef, { stock: newStock });
+      }
+    }
 
     // Registrar auditoria
     await this.logAudit(docRef.id, 'add', null, saleWithUserId);

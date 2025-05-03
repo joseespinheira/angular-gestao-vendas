@@ -1,9 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ErrorTypeEnum } from '@core/enums/error-type.enum';
 import { AuthService } from '@core/services/auth.service';
-import { ErrorDialogComponent } from '@shared/components/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -23,21 +21,6 @@ export class HomeComponent {
   }
 
   navigateTo(value: string): void {
-    switch (value) {
-      case 'sales':
-        this.router.navigate(['/sales']);
-        break;
-      case 'products':
-        this.router.navigate(['/products']);
-        break;
-      case 'clients':
-        this.router.navigate(['/clients']);
-        break;
-      default:
-        this.dialog.open(ErrorDialogComponent, {
-          data: { message: 'Em construção', type: ErrorTypeEnum.Info },
-        });
-        break;
-    }
+    this.router.navigate([value]);
   }
 }

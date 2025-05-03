@@ -1,3 +1,5 @@
+import { Product } from './productDTO';
+
 interface SaleDTO {
   id: string;
   clientId: string;
@@ -13,7 +15,7 @@ export class Sale {
   id: string;
   clientId: string;
   clientName: string;
-  products: [];
+  products: Product[];
   total: number;
   userId: string;
   status: string;
