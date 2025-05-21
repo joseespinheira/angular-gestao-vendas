@@ -1,10 +1,96 @@
 <div class="sales-list">
-  <button (click)="navigateTo('home')" class="btn btn-secondary">Voltar</button>
-  <button (click)="navigateTo('sales/add')" class="btn btn-primary m-1">
-    Adicionar
-  </button>
-  <button (click)="getSales()" class="btn btn-info">Atualizar</button>
+  <div class="d-flex justify-content-between align-items-center mb-1">
+    <button (click)="navigateTo('home')" class="btn btn-secondary">
+      Voltar
+    </button>
+    <button (click)="navigateTo('sales/add')" class="btn btn-primary m-1">
+      Adicionar
+    </button>
+    <button (click)="getSales()" class="btn btn-info">Atualizar</button>
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      aria-label="Example icon-button with a menu"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="exportList()">
+        <mat-icon>link</mat-icon>
+        <span>Exportar lista</span>
+      </button>
+      <!-- <button mat-menu-item>
+              <mat-icon>link</mat-icon>
+              <span>Detalhes</span>
+            </button> -->
+    </mat-menu>
+  </div>
   <h1>Lista de Vendas</h1>
+
+  <!-- Filtros em Accordion -->
+  <mat-accordion class="mb-3">
+    <mat-expansion-panel #filterPanel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Filtros</mat-panel-title>
+        <mat-panel-description>Filtrar vendas</mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="filters">
+        <mat-form-field appearance="outline" class="me-2 w-100">
+          <mat-label>Cliente</mat-label>
+          <input
+            matInput
+            [(ngModel)]="filter.clientName"
+            placeholder="Nome do cliente"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="me-2 w-100">
+          <mat-label>Data</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [(ngModel)]="filter.createdAt"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="me-2 w-100">
+          <mat-label>Situação</mat-label>
+          <mat-select [(ngModel)]="filter.status">
+            <mat-option value="">Todas</mat-option>
+            <mat-option value="Pendente">Pendente</mat-option>
+            <mat-option value="Concluída">Concluída</mat-option>
+            <mat-option value="Cancelada">Cancelada</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="d-flex mt-3">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="applyFilter(filterPanel)"
+          >
+            Filtrar
+          </button>
+          <button
+            mat-raised-button
+            color="warn"
+            class="ms-2"
+            (click)="clearFilter()"
+          >
+            Limpar
+          </button>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <!-- Tabela de vendas -->
   <table>
     <thead>
       <tr>
@@ -16,7 +102,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (sale of sales; track $index) {
+      @for (sale of filteredSales; track $index) {
       <tr>
         <td>{{ sale.clientName }}</td>
         <td>{{ sale.total | currency : "BRL" }}</td>

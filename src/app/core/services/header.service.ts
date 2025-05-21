@@ -7,7 +7,10 @@ import { filter } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class HeaderService {
-  private title: string = 'Sistema de Vendas';
+  private title: BehaviorSubject<string> = new BehaviorSubject<string>(
+    'Gestão de Vendas'
+  );
+  title$ = this.title.asObservable(); // Observable para escutar alterações no título
   private subtitle: string = 'Bem-vindo ao sistema de vendas!';
   private navigationKey: string = 'navigation'; // Chave para o localStorage
   private navigationSubject = new BehaviorSubject<string[]>(
@@ -20,11 +23,15 @@ export class HeaderService {
 
   // Métodos para título e subtítulo
   getTitle(): string {
-    return this.title;
+    return this.title.value;
   }
 
   setTitle(newTitle: string): void {
-    this.title = newTitle;
+    this.title.next(newTitle);
+  }
+
+  setTitleDefault(): void {
+    this.title.next('Gestão de Vendas');
   }
 
   getSubtitle(): string {

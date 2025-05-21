@@ -9,6 +9,7 @@ import { Product } from '@core/models/productDTO';
 import { ProductService } from '@core/services/product.service';
 import { ScreenService } from '@core/services/screen.service';
 import { PageBaseComponent } from '@shared/components/page-base/page-base.component';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { EditpriceModalComponent } from '../../components/edit-price-modal/edit-price-modal.component';
 import { EditStockModalComponent } from '../../components/edit-stock-modal/edit-stock-modal.component';
 
@@ -69,9 +70,15 @@ export class ProductsListComponent extends PageBaseComponent implements OnInit {
   }
 
   deleteProduct(productId: string): void {
-    this.productService.deleteProduct(productId).then(() => {
-      this.getProducts();
-      return;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent);
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.productService.deleteProduct(productId).then(() => {
+          this.getProducts(); // Atualiza a lista de produtos após a exclusão
+          console.log('Produto deletado com sucesso!');
+        });
+      }
     });
   }
 

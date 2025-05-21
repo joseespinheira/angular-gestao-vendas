@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { Client } from '@core/models/clientDTO';
 import { ClientService } from '@core/services/client.service';
 import { ScreenService } from '@core/services/screen.service';
+import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component';
 import { PageBaseComponent } from '@shared/components/page-base/page-base.component';
 
 @Component({
@@ -19,6 +21,7 @@ export class ClientsListComponent extends PageBaseComponent implements OnInit {
   private router = inject(Router);
   private screenService = inject(ScreenService);
   private clientService = inject(ClientService);
+  private dialog = inject(MatDialog);
 
   clients: Client[] = [];
   maxCharacters$ = this.screenService.maxCharacters$;
@@ -61,9 +64,14 @@ export class ClientsListComponent extends PageBaseComponent implements OnInit {
   }
 
   deleteClient(clientId: string): void {
-    this.clientService.deleteClient(clientId).then(() => {
-      this.getClients();
-      return;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent);
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.clientService.deleteClient(clientId).then(() => {
+          this.getClients();
+        });
+      }
     });
   }
 }

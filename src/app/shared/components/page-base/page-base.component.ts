@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { AuthService } from '@core/services/auth.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-page-base',
@@ -7,18 +6,14 @@ import { AuthService } from '@core/services/auth.service';
 })
 export class PageBaseComponent {
   title = 'angular-gestao-vendas';
-  isLoggedIn = false;
-  carregando = false;
+  // isLoggedIn = false;
+  loading = false;
 
-  private authService = inject(AuthService);
+  // private authService = inject(AuthService);
 
-  constructor() {
-    this.authService.isLoggedIn$.subscribe((loggedIn) => {
-      this.isLoggedIn = loggedIn;
-    });
-  }
+  constructor() {}
 
   SetCarregando(loading: boolean) {
-    this.carregando = loading;
+    this.loading = loading;
   }
 }

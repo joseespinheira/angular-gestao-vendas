@@ -12,6 +12,20 @@
       </button>
     </div>
 
+    <!-- Botão de Registrar Pagamento -->
+    <div class="col-6">
+      <button
+        type="button"
+        class="btn btn-success w-100 py-4 d-flex flex-column align-items-center rounded"
+        (click)="navigateTo('sales/pay')"
+      >
+        <i class="bi bi-cash fs-1"></i>
+        <span class="mt-2">Pagamento</span>
+      </button>
+    </div>
+
+    <hr />
+    <label>Registro:</label>
     <!-- Botão Vendas -->
     <div class="col-6">
       <button
@@ -28,7 +42,7 @@
     <div class="col-6">
       <button
         type="button"
-        class="btn btn-success w-100 py-4 d-flex flex-column align-items-center rounded"
+        class="btn btn-primary w-100 py-4 d-flex flex-column align-items-center rounded"
         (click)="navigateTo('clients')"
       >
         <i class="bi bi-people-fill fs-1"></i>
@@ -40,7 +54,7 @@
     <div class="col-6">
       <button
         type="button"
-        class="btn btn-warning w-100 py-4 d-flex flex-column align-items-center rounded"
+        class="btn btn-primary w-100 py-4 d-flex flex-column align-items-center rounded"
         (click)="navigateTo('products')"
       >
         <i class="bi bi-box-seam fs-1"></i>
