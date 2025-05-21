@@ -143,45 +143,59 @@ export class SalesListComponent implements OnInit {
       startY: 30,
     });
 
+    // // Gerar o PDF como blob
+    // const pdfBlob = doc.output('blob');
+    // const url = URL.createObjectURL(pdfBlob);
+
+    // // Criar um link temporário para download
+    // const a = document.createElement('a');
+    // a.href = url;
+    // a.download = 'lista-de-produtos.pdf';
+    // document.body.appendChild(a);
+    // a.click();
+    // document.body.removeChild(a);
+
+    // // Abrir o PDF em uma nova aba (útil para Android e desktop)
+    // window.open(url, '_parent');
+
+    // // Opcional: liberar o objeto URL após algum tempo
+    // setTimeout(() => URL.revokeObjectURL(url), 10000);
+
     // Gerar o PDF como blob
     const pdfBlob = doc.output('blob');
-    const url = URL.createObjectURL(pdfBlob);
+    const pdfFile = new File([pdfBlob], 'lista-de-produtos.pdf', {
+      type: 'application/pdf',
+    });
 
-    // Criar um link temporário para download
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'lista-de-produtos.pdf';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    // Abrir o PDF em uma nova aba (útil para Android e desktop)
-    window.open(url, '_parent');
-
-    // Opcional: liberar o objeto URL após algum tempo
-    setTimeout(() => URL.revokeObjectURL(url), 10000);
-
-    // // Gerar o PDF como blob e abrir em nova aba
-
-    // // Salvar o PDF como arquivo
-    // const pdfFileName = 'lista-de-produtos.pdf';
-    // doc.save(pdfFileName);
-    // window.open(pdfFileName, '_blank');
-
-    // Gerar link para compartilhamento via WhatsApp
-    // const pdfBlob = doc.output('blob');
-    // const fileReader = new FileReader();
-    // fileReader.onload = () => {
-    //   const base64PDF = fileReader.result as string;
-    //   const pdfDataURL = `data:application/pdf;base64,${
-    //     base64PDF.split(',')[1]
-    //   }`;
-    //   const whatsappMessage = `Confira a lista de vendas: ${pdfDataURL}`;
-    //   const whatsappURL = `https://wa.me/?text=${encodeURIComponent(
-    //     whatsappMessage
-    //   )}`;
-    //   window.open(whatsappURL, '_blank');
-    // };
-    // fileReader.readAsDataURL(pdfBlob);
+    // Tenta compartilhar usando a Web Share API (se disponível)
+    if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+      navigator
+        .share({
+          title: 'Lista de Produtos',
+          text: 'Confira a lista de produtos em PDF.',
+          files: [pdfFile],
+        })
+        .catch((error) => {
+          // Se o usuário cancelar ou der erro, apenas faça o download normalmente
+          const url = URL.createObjectURL(pdfBlob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'lista-de-produtos.pdf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(url), 10000);
+        });
+    } else {
+      // Fallback: download normal
+      const url = URL.createObjectURL(pdfBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'lista-de-produtos.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    }
   }
 }
