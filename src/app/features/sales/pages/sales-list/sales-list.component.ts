@@ -156,7 +156,7 @@ export class SalesListComponent implements OnInit {
     document.body.removeChild(a);
 
     // Abrir o PDF em uma nova aba (útil para Android e desktop)
-    window.open(url, '_blank');
+    window.open(url, '_parent');
 
     // Opcional: liberar o objeto URL após algum tempo
     setTimeout(() => URL.revokeObjectURL(url), 10000);
