@@ -185,63 +185,179 @@ export class SalesListComponent implements OnInit {
   exportListComplete(): void {
     const doc = new jsPDF();
 
-    // Título do PDF
     doc.setFontSize(18);
-    doc.text('Lista de Produtos', 14, 20);
+    doc.text('Lista Completa de Vendas', 14, 20);
 
-    // Configuração da tabela
-    const tableData = this.filteredSales.map((sale) => [
-      sale.clientName,
-      sale.total.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      }),
-      new Date(sale.createdAt).toLocaleDateString('pt-BR'),
-      sale.status,
-    ]);
+    // Monta as linhas da tabela principal + produtos
+    const body: any[] = [];
+    this.filteredSales.forEach((sale) => {
+      // Linha da venda
 
-    autoTable(doc, {
-      head: [['Cliente', 'Total', 'Data', 'Situação']],
-      body: tableData,
-      startY: 30,
+      // Cabeçalho dos produtos (linha única, mesclando as 4 colunas)
+      body.push([
+        {
+          content: 'Produtos:',
+          colSpan: 4,
+          styles: { halign: 'left', fontSize: 12, textColor: [41, 128, 185] },
+        },
+      ]);
+      body.push([
+        {
+          content: 'Nome',
+          styles: { fillColor: [166, 60, 227], textColor: [255, 255, 255] },
+        },
+        {
+          content: 'Quantidade',
+          styles: { fillColor: [166, 60, 227], textColor: [255, 255, 255] },
+        },
+        {
+          content: 'Valor unitário',
+          styles: { fillColor: [166, 60, 227], textColor: [255, 255, 255] },
+        },
+        {
+          content: 'Subtotal',
+          styles: { fillColor: [166, 60, 227], textColor: [255, 255, 255] },
+        },
+      ]);
+      // Linhas dos produtos
+      sale.products.forEach((product) => {
+        body.push([
+          {
+            content: `${product.name}`,
+            styles: { fontSize: 10 },
+          },
+          { content: `${product.stock}`, styles: { fontSize: 10 } },
+          {
+            content: `${product.price.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            })}`,
+            styles: { fontSize: 10 },
+          },
+          {
+            content: `${(product.stock * product.price).toLocaleString(
+              'pt-BR',
+              { style: 'currency', currency: 'BRL' }
+            )}`,
+            styles: { fontSize: 10 },
+          },
+        ]);
+      });
+      body.push([
+        {
+          content: sale.clientName,
+          styles: {
+            fontStyle: 'bold',
+            fillColor: [110, 40, 150],
+            textColor: [255, 255, 255],
+          },
+        },
+        {
+          content:
+            'Total: ' +
+            sale.total.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            }),
+          styles: {
+            fontStyle: 'bold',
+            fillColor: [110, 40, 150],
+            textColor: [255, 255, 255],
+          },
+        },
+        {
+          content: new Date(sale.createdAt).toLocaleDateString('pt-BR'),
+          styles: {
+            fontStyle: 'bold',
+            fillColor: [110, 40, 150],
+            textColor: [255, 255, 255],
+          },
+        },
+        {
+          content: 'Status: ' + sale.status,
+          styles: {
+            fontStyle: 'bold',
+            fillColor: [110, 40, 150],
+            textColor: [255, 255, 255],
+          },
+        },
+      ]);
+
+      // Linha em branco para separar vendas
+      body.push([
+        {
+          content: '',
+          colSpan: 4,
+          styles: { cellPadding: 2, fontSize: 2, lineWidth: 0 },
+        },
+      ]);
     });
 
-    // Gerar o PDF como blob
+    autoTable(doc, {
+      head: [],
+      body,
+      startY: 30,
+      styles: { fontSize: 12 },
+      headStyles: { fillColor: [166, 60, 227] },
+      margin: { left: 14, right: 14 },
+      theme: 'grid',
+    });
+
+    // Data de geração
+    const dataGeracao = new Date().toLocaleString('pt-BR');
+    doc.setFontSize(10);
+    doc.text(
+      `Data de Geração: ${dataGeracao}`,
+      14,
+      (doc as any).lastAutoTable.finalY + 10
+    );
+
+    // Total geral
+    const totalGeral = this.filteredSales.reduce((acc, sale) => {
+      return (
+        acc +
+        sale.products.reduce((acc, product) => {
+          return acc + product.stock * product.price;
+        }, 0)
+      );
+    }, 0);
+    doc.setFontSize(14);
+    const totalText = `Total a pagar: ${totalGeral.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    })}`;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const textWidth = doc.getTextWidth(totalText);
+    const x = (pageWidth - textWidth) / 2;
+    const y = (doc as any).lastAutoTable.finalY + 20;
+    doc.setLineWidth(0.5);
+    doc.line(14, y - 6, pageWidth - 14, y - 6);
+    doc.setFont('undefined', 'bold');
+    doc.text(totalText, x, (doc as any).lastAutoTable.finalY + 20);
+    // Adiciona o rodapé
+    const footerText = 'App Gestão de Vendas';
+    const footerY = doc.internal.pageSize.height - 10; // 10 unidades acima da parte inferior da página
+    const footerWidth = doc.getTextWidth(footerText);
+    const footerX = (doc.internal.pageSize.width - footerWidth) / 2; // Centraliza o texto
+    doc.setFontSize(10);
+    doc.text(footerText, footerX, footerY);
+    doc.setFontSize(8);
+    doc.text('Desenvolvido por: José Espinheira', footerX, footerY + 5); // Adiciona o nome do desenvolvedor
+
+    // Download/compartilhamento
     const pdfBlob = doc.output('blob');
-    const pdfFile = new File([pdfBlob], 'lista-de-produtos.pdf', {
+    const pdfFile = new File([pdfBlob], 'lista-completa-vendas.pdf', {
       type: 'application/pdf',
     });
 
-    // Tenta compartilhar usando a Web Share API (se disponível)
-    if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
-      navigator
-        .share({
-          title: 'Lista de Produtos',
-          text: 'Confira a lista de produtos em PDF.',
-          files: [pdfFile],
-        })
-        .catch((error) => {
-          // Se o usuário cancelar ou der erro, apenas faça o download normalmente
-          const url = URL.createObjectURL(pdfBlob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'lista-de-produtos.pdf';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          setTimeout(() => URL.revokeObjectURL(url), 10000);
-        });
-    } else {
-      // Fallback: download normal
-      const url = URL.createObjectURL(pdfBlob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'lista-de-produtos.pdf';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 10000);
-    }
+    const url = URL.createObjectURL(pdfBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'lista-completa-vendas.pdf';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
   }
 
   exportListProducts(): void {
