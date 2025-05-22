@@ -103,6 +103,7 @@ export class SalesListComponent implements OnInit {
               createdAt: sale['createdAt'],
               status: sale['status'],
               userId: sale['userId'],
+              totalPaid: sale['totalPaid'],
             });
           });
           this.filteredSales = [...this.sales];
@@ -143,23 +144,175 @@ export class SalesListComponent implements OnInit {
       startY: 30,
     });
 
-    // // Gerar o PDF como blob
-    // const pdfBlob = doc.output('blob');
-    // const url = URL.createObjectURL(pdfBlob);
+    // Gerar o PDF como blob
+    const pdfBlob = doc.output('blob');
+    const pdfFile = new File([pdfBlob], 'lista-de-produtos.pdf', {
+      type: 'application/pdf',
+    });
 
-    // // Criar um link temporário para download
-    // const a = document.createElement('a');
-    // a.href = url;
-    // a.download = 'lista-de-produtos.pdf';
-    // document.body.appendChild(a);
-    // a.click();
-    // document.body.removeChild(a);
+    // Tenta compartilhar usando a Web Share API (se disponível)
+    if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+      navigator
+        .share({
+          title: 'Lista de Produtos',
+          text: 'Confira a lista de produtos em PDF.',
+          files: [pdfFile],
+        })
+        .catch((error) => {
+          // Se o usuário cancelar ou der erro, apenas faça o download normalmente
+          const url = URL.createObjectURL(pdfBlob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'lista-de-produtos.pdf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(url), 10000);
+        });
+    } else {
+      // Fallback: download normal
+      const url = URL.createObjectURL(pdfBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'lista-de-produtos.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    }
+  }
 
-    // // Abrir o PDF em uma nova aba (útil para Android e desktop)
-    // window.open(url, '_parent');
+  exportListComplete(): void {
+    const doc = new jsPDF();
 
-    // // Opcional: liberar o objeto URL após algum tempo
-    // setTimeout(() => URL.revokeObjectURL(url), 10000);
+    // Título do PDF
+    doc.setFontSize(18);
+    doc.text('Lista de Produtos', 14, 20);
+
+    // Configuração da tabela
+    const tableData = this.filteredSales.map((sale) => [
+      sale.clientName,
+      sale.total.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
+      new Date(sale.createdAt).toLocaleDateString('pt-BR'),
+      sale.status,
+    ]);
+
+    autoTable(doc, {
+      head: [['Cliente', 'Total', 'Data', 'Situação']],
+      body: tableData,
+      startY: 30,
+    });
+
+    // Gerar o PDF como blob
+    const pdfBlob = doc.output('blob');
+    const pdfFile = new File([pdfBlob], 'lista-de-produtos.pdf', {
+      type: 'application/pdf',
+    });
+
+    // Tenta compartilhar usando a Web Share API (se disponível)
+    if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+      navigator
+        .share({
+          title: 'Lista de Produtos',
+          text: 'Confira a lista de produtos em PDF.',
+          files: [pdfFile],
+        })
+        .catch((error) => {
+          // Se o usuário cancelar ou der erro, apenas faça o download normalmente
+          const url = URL.createObjectURL(pdfBlob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'lista-de-produtos.pdf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(url), 10000);
+        });
+    } else {
+      // Fallback: download normal
+      const url = URL.createObjectURL(pdfBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'lista-de-produtos.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    }
+  }
+
+  exportListProducts(): void {
+    const doc = new jsPDF();
+
+    // Título do PDF
+    doc.setFontSize(18);
+    doc.text('Extrato de Produtos', 14, 20);
+    doc.setFontSize(10);
+    doc.text('App Gestão de Vendas', 14, 25);
+    doc.setFontSize(14);
+    // Configuração da tabela
+    const tableData = this.filteredSales.flatMap((sale) =>
+      sale.products.map((product) => [
+        product.name,
+        product.stock,
+        product.price.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+        (product.stock * product.price).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+        new Date(sale.createdAt).toLocaleDateString('pt-BR'),
+      ])
+    );
+
+    autoTable(doc, {
+      head: [['Produto', 'Quantidade', 'Valor un.', 'Total', 'Data']],
+      body: tableData,
+      startY: 30,
+    });
+
+    // Adiciona data e hora do documento gerado
+    const dataGeracao = new Date().toLocaleString('pt-BR');
+    doc.setFontSize(10); // Define fonte menor para a data
+    doc.text(
+      `Data de Geração: ${dataGeracao}`,
+      14,
+      (doc as any).lastAutoTable.finalY + 10
+    );
+
+    const totalGeral = this.filteredSales.reduce((acc, sale) => {
+      return (
+        acc +
+        sale.products.reduce((acc, product) => {
+          return acc + product.stock * product.price;
+        }, 0)
+      );
+    }, 0);
+
+    // Adiciona o total geral centralizado
+    doc.setFontSize(14);
+    const totalText = `Total a pagar: ${totalGeral.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    })}`;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const textWidth = doc.getTextWidth(totalText);
+    const x = (pageWidth - textWidth) / 2;
+    const y = (doc as any).lastAutoTable.finalY + 20;
+
+    // Linha horizontal (tipo <hr>) acima do total
+    const margin = 14; // mesma margem usada no texto
+    doc.setLineWidth(0.5);
+    doc.line(margin, y - 6, pageWidth - margin, y - 6);
+
+    doc.setFont('undefined', 'bold'); // Define o texto como negrito
+
+    doc.text(totalText, x, (doc as any).lastAutoTable.finalY + 20);
 
     // Gerar o PDF como blob
     const pdfBlob = doc.output('blob');

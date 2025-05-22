@@ -9,6 +9,7 @@ interface SaleDTO {
   userId: string;
   status: string;
   createdAt: Date;
+  totalPaid: number;
 }
 
 export class Sale {
@@ -20,6 +21,7 @@ export class Sale {
   userId: string;
   status: string;
   createdAt: Date;
+  totalPaid: number;
 
   constructor(partial: SaleDTO) {
     this.id = partial.id || '';
@@ -30,5 +32,6 @@ export class Sale {
     this.userId = partial.userId || '';
     this.status = partial.status || '1';
     this.createdAt = partial.createdAt || new Date();
+    this.totalPaid = partial.totalPaid || 0;
   }
 }

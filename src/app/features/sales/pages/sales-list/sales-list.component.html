@@ -16,13 +16,15 @@
     </button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="exportList()">
-        <mat-icon>link</mat-icon>
-        <span>Exportar lista</span>
+        <mat-icon>share</mat-icon>
+        <span>Exportar lista</span></button
+      ><button mat-menu-item (click)="exportListComplete()">
+        <mat-icon>share</mat-icon>
+        <span>Exportar lista detalhada</span></button
+      ><button mat-menu-item (click)="exportListProducts()">
+        <mat-icon>share</mat-icon>
+        <span>Exportar produtos</span>
       </button>
-      <!-- <button mat-menu-item>
-              <mat-icon>link</mat-icon>
-              <span>Detalhes</span>
-            </button> -->
     </mat-menu>
   </div>
   <h1>Lista de Vendas</h1>
@@ -122,10 +124,13 @@
               <mat-icon>delete</mat-icon>
               <span>Excluir</span>
             </button>
-            <!-- <button mat-menu-item>
+            <button
+              mat-menu-item
+              (click)="navigateTo('sales/details/' + sale.id)"
+            >
               <mat-icon>link</mat-icon>
               <span>Detalhes</span>
-            </button> -->
+            </button>
           </mat-menu>
         </td>
       </tr>

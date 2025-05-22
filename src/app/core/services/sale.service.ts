@@ -123,6 +123,24 @@ export class SaleService {
   }
 
   /**
+   * Obtém os detalhes de um venda específico.
+   * @param saleId ID do venda a ser obtido.
+   * @returns Promisse com os detalhes do venda.
+   */
+  getSaleDetails(saleId: string): Promise<any> {
+    const saleCollection = collection(this.firestore, 'sales');
+    const saleDocRef = doc(saleCollection, saleId);
+
+    return getDoc(saleDocRef).then((doc) => {
+      if (doc.exists()) {
+        return { id: doc.id, ...doc.data() };
+      } else {
+        throw new Error('Venda não encontrada!');
+      }
+    });
+  }
+
+  /**
    * Obtém um venda específico pelo ID.
    * @param saleId ID do venda a ser obtido.
    * @return Promise com os dados do venda.

@@ -1,0 +1,46 @@
+<div>
+  <h1>Detalhes da Venda</h1>
+  <div class="details">
+    <!-- <p><strong>ID:</strong> {{ sale.id }}</p> -->
+    <p><strong>Cliente:</strong> {{ sale.clientName }}</p>
+    <p>
+      <strong>Data:</strong> {{ sale.createdAt | date : "dd/MM/yyyy HH:mm:ss" }}
+    </p>
+    <p><strong>Status:</strong> {{ sale.status }}</p>
+    <p><strong>Total:</strong> {{ sale.total }}</p>
+  </div>
+
+  <hr />
+  <h2>Produtos</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Quantidade</th>
+        <th>Preço Unitário</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (product of sale.products; track $index) {
+      <tr>
+        <td>{{ product.name }}</td>
+        <td>{{ product.stock }}</td>
+        <td>{{ product.price | currency : "BRL" }}</td>
+        <td>{{ product.stock * product.price | currency : "BRL" }}</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  <div class="total">
+    <p><strong>Total da Venda:</strong> {{ sale.total | currency : "BRL" }}</p>
+    <p>
+      <strong>Total Pago:</strong>
+      {{ sale.totalPaid || "0" | currency : "BRL" }}
+    </p>
+  </div>
+
+  <button (click)="navigateTo('sales')" class="btn btn-secondary">
+    Voltar
+  </button>
+</div>
